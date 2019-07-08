@@ -23,7 +23,7 @@ public class HttpRequestRoundTripTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
 
-    public static HttpRequest before = new HttpRequest("http://domain/");
+    public static HttpRequest before = new HttpRequest("http://domain/","");
 
     @Test
     public void configRoundtripGroup1() throws Exception {

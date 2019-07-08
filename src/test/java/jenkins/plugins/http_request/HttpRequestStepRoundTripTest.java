@@ -25,7 +25,7 @@ public class HttpRequestStepRoundTripTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
 
-    public static HttpRequestStep before = new HttpRequestStep("http://domain/");
+    public static HttpRequestStep before = new HttpRequestStep("http://domain/","");
 
     @Test
     public void configRoundTripGroup1() throws Exception {

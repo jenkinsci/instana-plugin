@@ -3,6 +3,9 @@
     <f:entry field="url" title="URL" help="/plugin/http_request/help-url.html">
         <f:textbox />
     </f:entry>
+  	<f:entry field="token" title="Token" help="/plugin/http_request/help-url.html">
+		<f:textbox />
+	</f:entry>
     <f:entry field="httpMode" title="HTTP mode" help="/plugin/http_request/help-httpMode.html">
         <f:select />
     </f:entry>

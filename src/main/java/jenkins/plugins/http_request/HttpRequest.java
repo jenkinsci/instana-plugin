@@ -55,6 +55,7 @@ import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
 public class HttpRequest extends Builder {
 
     private @Nonnull String url;
+    private @Nonnull String token;
 	private Boolean ignoreSslErrors = DescriptorImpl.ignoreSslErrors;
 	private HttpMode httpMode                 = DescriptorImpl.httpMode;
 	private String httpProxy                  = DescriptorImpl.httpProxy;
@@ -75,13 +76,19 @@ public class HttpRequest extends Builder {
     private List<HttpRequestNameValuePair> customHeaders = DescriptorImpl.customHeaders;
 
 	@DataBoundConstructor
-	public HttpRequest(@Nonnull String url) {
+	public HttpRequest(@Nonnull String url, @Nonnull String token) {
 		this.url = url;
+		this.token = token;
 	}
 
 	@Nonnull
 	public String getUrl() {
 		return url;
+	}
+
+	@Nonnull
+	public String getToken() {
+		return token;
 	}
 
 	public Boolean getIgnoreSslErrors() {
@@ -313,6 +320,7 @@ public class HttpRequest extends Builder {
 		if (acceptType != null && acceptType != MimeType.NOT_SET) {
 			headers.add(new HttpRequestNameValuePair("Accept", acceptType.getValue()));
 		}
+		headers.add(new HttpRequestNameValuePair("Authorization","apiToken " + token, true));
 		for (HttpRequestNameValuePair header : customHeaders) {
 			String headerName = envVars.expand(header.getName());
 			String headerValue = envVars.expand(header.getValue());
