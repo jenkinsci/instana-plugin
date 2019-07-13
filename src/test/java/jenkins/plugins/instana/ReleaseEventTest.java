@@ -55,7 +55,7 @@ import jenkins.plugins.instana.util.RequestAction;
 /**
  * @author Martin d'Anjou
  */
-public class HttpRequestTest extends HttpRequestTestBase {
+public class ReleaseEventTest extends ReleaseEventTestBase {
 
 	@Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -65,13 +65,13 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -84,13 +84,13 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setQuiet(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setQuiet(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -109,14 +109,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setConsoleLogResponseBody(true);
-		httpRequest.setValidResponseContent(findMe);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setConsoleLogResponseBody(true);
+		releaseEvent.setValidResponseContent(findMe);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -129,14 +129,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setConsoleLogResponseBody(true);
-		httpRequest.setValidResponseContent("bad content");
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setConsoleLogResponseBody(true);
+		releaseEvent.setValidResponseContent("bad content");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -150,16 +150,16 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Expect a mime type that matches the response
-		httpRequest.setAcceptType(MimeType.TEXT_PLAIN);
+		releaseEvent.setAcceptType(MimeType.TEXT_PLAIN);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -172,16 +172,16 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Expect a mime type that does not match the response
-		httpRequest.setAcceptType(MimeType.TEXT_HTML);
+		releaseEvent.setAcceptType(MimeType.TEXT_HTML);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -194,16 +194,16 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerCheckBuildParameters();
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkBuildParameters");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/checkBuildParameters");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Activate passBuildParameters
-		httpRequest.setPassBuildParameters(true);
+		releaseEvent.setPassBuildParameters(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0, new UserIdCause(), new ParametersAction(new StringParameterValue("foo", "value"))).get();
 
 		// Check expectations
@@ -217,22 +217,22 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerCheckRequestBodyWithTag();
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkRequestBodyWithTag");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/checkRequestBodyWithTag");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Activate requsetBody
-		httpRequest.setHttpMode(HttpMode.POST);
+		releaseEvent.setHttpMode(HttpMode.POST);
 
 		// Use some random body content that contains a parameter
-		httpRequest.setRequestBody("cleanupDir=D:/continuousIntegration/deployments/Daimler/${Tag}/standalone");
+		releaseEvent.setRequestBody("cleanupDir=D:/continuousIntegration/deployments/Daimler/${Tag}/standalone");
 
 		// Build parameters have to be passed
-		httpRequest.setPassBuildParameters(true);
+		releaseEvent.setPassBuildParameters(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 
 		FreeStyleBuild build = project.scheduleBuild2(0, new UserIdCause(), new ParametersAction(new StringParameterValue("Tag", "trunk"))).get();
 
@@ -246,16 +246,16 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Activate passBuildParameters without parameters present
-		httpRequest.setPassBuildParameters(true);
+		releaseEvent.setPassBuildParameters(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -268,16 +268,16 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Activate passBuildParameters
-		httpRequest.setPassBuildParameters(false);
+		releaseEvent.setPassBuildParameters(false);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0, new UserIdCause(), new ParametersAction(new StringParameterValue("foo", "value"))).get();
 
 		// Check expectations
@@ -290,17 +290,17 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerCheckRequestBody();
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkRequestBody");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/checkRequestBody");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Activate requsetBody
-		httpRequest.setHttpMode(HttpMode.POST);
-		httpRequest.setRequestBody("TestRequestBody");
+		releaseEvent.setHttpMode(HttpMode.POST);
+		releaseEvent.setRequestBody("TestRequestBody");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -313,16 +313,16 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Activate passBuildParameters
-		httpRequest.setRequestBody("TestRequestBody");
+		releaseEvent.setRequestBody("TestRequestBody");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -342,14 +342,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 	}
 
 	public void doRequest(final HttpMode method) throws Exception {
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/do" + method.toString());
-		httpRequest.setHttpMode(method);
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/do" + method.toString());
+		releaseEvent.setHttpMode(method);
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -367,13 +367,13 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerInvalidStatusCode();
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/invalidStatusCode");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/invalidStatusCode");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -386,14 +386,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerInvalidStatusCode();
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/invalidStatusCode");
-		httpRequest.setValidResponseCodes("100:599");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/invalidStatusCode");
+		releaseEvent.setValidResponseCodes("100:599");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -406,14 +406,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter");
-		httpRequest.setValidResponseCodes("599:100");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doesNotMatter");
+		releaseEvent.setValidResponseCodes("599:100");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -425,14 +425,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter");
-		httpRequest.setValidResponseCodes("text");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doesNotMatter");
+		releaseEvent.setValidResponseCodes("text");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -444,14 +444,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter");
-		httpRequest.setValidResponseCodes("1:text");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doesNotMatter");
+		releaseEvent.setValidResponseCodes("1:text");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -463,14 +463,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter");
-		httpRequest.setValidResponseCodes("1:2:3");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doesNotMatter");
+		releaseEvent.setValidResponseCodes("1:2:3");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -489,18 +489,18 @@ public class HttpRequestTest extends HttpRequestTestBase {
 	}
 
 	public void sendContentType(final MimeType mimeType, String checkMessage, String body) throws Exception {
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/incoming_" + mimeType.toString());
-		httpRequest.setConsoleLogResponseBody(true);
-		httpRequest.setContentType(mimeType);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/incoming_" + mimeType.toString());
+		releaseEvent.setConsoleLogResponseBody(true);
+		releaseEvent.setContentType(mimeType);
         if (body != null) {
-            httpRequest.setHttpMode(HttpMode.POST);
-            httpRequest.setRequestBody(body);
+            releaseEvent.setHttpMode(HttpMode.POST);
+            releaseEvent.setRequestBody(body);
         }
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -533,14 +533,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 	}
 
 	public void sendAcceptType(final MimeType mimeType) throws Exception {
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/accept_" + mimeType.toString());
-		httpRequest.setConsoleLogResponseBody(true);
-		httpRequest.setAcceptType(mimeType);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/accept_" + mimeType.toString());
+		releaseEvent.setConsoleLogResponseBody(true);
+		releaseEvent.setAcceptType(mimeType);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -553,14 +553,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setOutputFile("file.txt");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setOutputFile("file.txt");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -581,13 +581,13 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerRequestChecker(HttpMode.GET);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
-		httpRequest.setOutputFile("file.txt");
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/doGET");
+		releaseEvent.setOutputFile("file.txt");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -609,13 +609,13 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerTimeout();
 
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/timeout");
-		httpRequest.setTimeout(2);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/timeout");
+		releaseEvent.setTimeout(2);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -630,12 +630,12 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		List<HttpRequestNameValuePair> customHeaders = new ArrayList<HttpRequestNameValuePair>();
 		customHeaders.add(new HttpRequestNameValuePair("customHeader", "value1"));
 		customHeaders.add(new HttpRequestNameValuePair("customHeader", "value2"));
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/customHeaders");
-		httpRequest.setCustomHeaders(customHeaders);
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/customHeaders");
+		releaseEvent.setCustomHeaders(customHeaders);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -647,25 +647,25 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		// Prepare the server
 		registerCustomHeadersResolved();
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/customHeadersResolved");
-		httpRequest.setConsoleLogResponseBody(true);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/customHeadersResolved");
+		releaseEvent.setConsoleLogResponseBody(true);
 
 		// Activate requsetBody
-		httpRequest.setHttpMode(HttpMode.POST);
+		releaseEvent.setHttpMode(HttpMode.POST);
 
 		// Add some custom headers
 		List<HttpRequestNameValuePair> customHeaders = new ArrayList<HttpRequestNameValuePair>();
 		customHeaders.add(new HttpRequestNameValuePair("resolveCustomParam", "${Tag}"));
 		customHeaders.add(new HttpRequestNameValuePair("resolveEnvParam", "${WORKSPACE}"));
-		httpRequest.setCustomHeaders(customHeaders);
+		releaseEvent.setCustomHeaders(customHeaders);
 
 		// Activate passBuildParameters
-		httpRequest.setPassBuildParameters(true);
+		releaseEvent.setPassBuildParameters(true);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 
 		FreeStyleBuild build = project.scheduleBuild2(0, new UserIdCause(),
 				new ParametersAction(new StringParameterValue("Tag", "trunk"), new StringParameterValue("WORKSPACE", "C:/path/to/my/workspace"))).get();
@@ -681,13 +681,13 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerBasicAuth();
 
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/basicAuth");
-		httpRequest.setAuthentication("non-existent-key");
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/basicAuth");
+		releaseEvent.setAuthentication("non-existent-key");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -703,13 +703,13 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerBasicCredential("keyname1", "username1", "password1");
 		registerBasicCredential("keyname2", "username2", "password2");
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/basicAuth");
-		httpRequest.setAuthentication("keyname1");
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/basicAuth");
+		releaseEvent.setAuthentication("keyname1");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -771,14 +771,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		List<FormAuthentication> formAuthList = new ArrayList<FormAuthentication>();
 		formAuthList.add(formAuth);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/test-auth");
-		HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
-		httpRequest.setAuthentication("Form");
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/test-auth");
+		InstanaPluginGlobalConfig.get().setFormAuthentications(formAuthList);
+		releaseEvent.setAuthentication("Form");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -804,14 +804,14 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		List<FormAuthentication> formAuthList = new ArrayList<FormAuthentication>();
 		formAuthList.add(formAuth);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/formAuth");
-		HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
-		httpRequest.setAuthentication("keyname");
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/formAuth");
+		InstanaPluginGlobalConfig.get().setFormAuthentications(formAuthList);
+		releaseEvent.setAuthentication("keyname");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -836,15 +836,15 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		List<FormAuthentication> formAuthList = new ArrayList<FormAuthentication>();
 		formAuthList.add(formAuth);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/formAuthBad");
-		httpRequest.setConsoleLogResponseBody(true);
-		HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
-		httpRequest.setAuthentication("keyname");
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/formAuthBad");
+		releaseEvent.setConsoleLogResponseBody(true);
+		InstanaPluginGlobalConfig.get().setFormAuthentications(formAuthList);
+		releaseEvent.setAuthentication("keyname");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -871,17 +871,17 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		List<FormAuthentication> formAuthList = new ArrayList<FormAuthentication>();
 		formAuthList.add(formAuth);
 
-		// Prepare HttpRequest - the actual request won't be sent
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/non-existent");
-		httpRequest.setConsoleLogResponseBody(true);
-		HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
+		// Prepare ReleaseEvent - the actual request won't be sent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/non-existent");
+		releaseEvent.setConsoleLogResponseBody(true);
+		InstanaPluginGlobalConfig.get().setFormAuthentications(formAuthList);
 
 		// Select a non-existent form authentication, this will error the build before any request is made
-		httpRequest.setAuthentication("non-existent");
+		releaseEvent.setAuthentication("non-existent");
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -926,19 +926,19 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		String responseText = "File upload successful!";
 		registerFileUpload(testFolder, uploadFile, responseText);
 
-		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/uploadFile");
-		httpRequest.setHttpMode(HttpMode.POST);
-		httpRequest.setValidResponseCodes("201");
-		httpRequest.setConsoleLogResponseBody(true);
-		httpRequest.setUploadFile(uploadFile.getAbsolutePath());
-		httpRequest.setMultipartName("file-name");
-		httpRequest.setContentType(MimeType.APPLICATION_ZIP);
-		httpRequest.setAcceptType(MimeType.TEXT_PLAIN);
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent(baseURL() + "/uploadFile");
+		releaseEvent.setHttpMode(HttpMode.POST);
+		releaseEvent.setValidResponseCodes("201");
+		releaseEvent.setConsoleLogResponseBody(true);
+		releaseEvent.setUploadFile(uploadFile.getAbsolutePath());
+		releaseEvent.setMultipartName("file-name");
+		releaseEvent.setContentType(MimeType.APPLICATION_ZIP);
+		releaseEvent.setAcceptType(MimeType.TEXT_PLAIN);
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(httpRequest);
+		project.getBuildersList().add(releaseEvent);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations

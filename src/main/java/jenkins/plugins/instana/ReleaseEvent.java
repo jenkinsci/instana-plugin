@@ -52,7 +52,7 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 /**
  * @author Janario Oliveira
  */
-public class HttpRequest extends Builder {
+public class ReleaseEvent extends Builder {
 
 	private @Nonnull String url;
 	private Boolean ignoreSslErrors = DescriptorImpl.ignoreSslErrors;
@@ -75,7 +75,7 @@ public class HttpRequest extends Builder {
     private List<HttpRequestNameValuePair> customHeaders = DescriptorImpl.customHeaders;
 
 	@DataBoundConstructor
-	public HttpRequest(@Nonnull String url) {
+	public ReleaseEvent(@Nonnull String url) {
 		this.url = url;
 	}
 
@@ -249,8 +249,8 @@ public class HttpRequest extends Builder {
 
 	@Initializer(before = InitMilestone.PLUGINS_STARTED)
 	public static void xStreamCompatibility() {
-		Items.XSTREAM2.aliasField("logResponseBody", HttpRequest.class, "consoleLogResponseBody");
-		Items.XSTREAM2.aliasField("consoleLogResponseBody", HttpRequest.class, "consoleLogResponseBody");
+		Items.XSTREAM2.aliasField("logResponseBody", ReleaseEvent.class, "consoleLogResponseBody");
+		Items.XSTREAM2.aliasField("consoleLogResponseBody", ReleaseEvent.class, "consoleLogResponseBody");
 		Items.XSTREAM2.alias("pair", HttpRequestNameValuePair.class);
 	}
 
@@ -313,7 +313,7 @@ public class HttpRequest extends Builder {
 		if (acceptType != null && acceptType != MimeType.NOT_SET) {
 			headers.add(new HttpRequestNameValuePair("Accept", acceptType.getValue()));
 		}
-		headers.add(new HttpRequestNameValuePair("Authorization","apiToken " + HttpRequestGlobalConfig.get().getToken(), true));
+		headers.add(new HttpRequestNameValuePair("Authorization","apiToken " + InstanaPluginGlobalConfig.get().getToken(), true));
 		for (HttpRequestNameValuePair header : customHeaders) {
 			String headerName = envVars.expand(header.getName());
 			String headerValue = envVars.expand(header.getValue());
@@ -419,7 +419,7 @@ public class HttpRequest extends Builder {
 
         @Override
         public String getDisplayName() {
-            return "Release Event";
+            return "Instana release event";
         }
 
         public ListBoxModel doFillHttpModeItems() {
@@ -445,12 +445,12 @@ public class HttpRequest extends Builder {
 			}
 
 			List<Option> options = new ArrayList<>();
-			for (BasicDigestAuthentication basic : HttpRequestGlobalConfig.get().getBasicDigestAuthentications()) {
+			for (BasicDigestAuthentication basic : InstanaPluginGlobalConfig.get().getBasicDigestAuthentications()) {
 				options.add(new Option("(deprecated - use Jenkins Credentials) " +
 						basic.getKeyName(), basic.getKeyName()));
             }
 
-            for (FormAuthentication formAuthentication : HttpRequestGlobalConfig.get().getFormAuthentications()) {
+            for (FormAuthentication formAuthentication : InstanaPluginGlobalConfig.get().getFormAuthentications()) {
 				options.add(new Option(formAuthentication.getKeyName()));
 			}
 
@@ -467,7 +467,7 @@ public class HttpRequest extends Builder {
             List<Range<Integer>> validRanges = new ArrayList<Range<Integer>>();
 
             if (Strings.isNullOrEmpty(value)) {
-                value = HttpRequest.DescriptorImpl.validResponseCodes;
+                value = ReleaseEvent.DescriptorImpl.validResponseCodes;
             }
 
             String[] codes = value.split(",");

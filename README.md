@@ -33,7 +33,7 @@ formed. Suppose you have a build parameter called "param1",
 you can pass it to the HTTP request programmatically like so:
 
 ```groovy
-httpRequest "http://httpbin.org/response-headers?param1=${param1}"
+releaseEvent "http://httpbin.org/response-headers?param1=${param1}"
 ```
 
 If you wish to save the response to a file, you need to grab a
@@ -41,7 +41,7 @@ workspace. You can do this with a `node` Pipeline step. For
 example:
 
 ```groovy
-def response = httpRequest "http://httpbin.org/response-headers?param1=${param1}"
+def response = releaseEvent "http://httpbin.org/response-headers?param1=${param1}"
 node() {
     writeFile file: 'response.txt', text: response.content
 }
@@ -50,7 +50,7 @@ node() {
 You can access the response status code and content programmatically:
 
 ```groovy
-def response = httpRequest "http://httpbin.org/response-headers?param1=${param1}"
+def response = releaseEvent "http://httpbin.org/response-headers?param1=${param1}"
 println('Status: '+response.status)
 println('Response: '+response.content)
 ```
@@ -62,13 +62,13 @@ You may also send content in the body of the request, such as for a PATCH reques
 def patchOrg = """
     {"description": "$description"}
 """
-def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'PATCH', requestBody: patchOrg, url: "https://api.github.com/orgs/${orgName}"
+def response = releaseEvent acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'PATCH', requestBody: patchOrg, url: "https://api.github.com/orgs/${orgName}"
 ```
 
 You can also set custom headers:
 
 ```groovy
-def response = httpRequest customHeaders: [[name: 'foo', value: 'bar']]
+def response = releaseEvent customHeaders: [[name: 'foo', value: 'bar']]
 ```
 
 For details on the Pipeline features, use the Pipeline snippet generator

@@ -28,7 +28,7 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
  * @author Martin d'Anjou
  */
 @Extension
-public class HttpRequestGlobalConfig extends GlobalConfiguration {
+public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 
 	private @Nonnull String instanaUrl;
 	private @Nonnull String token;
@@ -37,13 +37,13 @@ public class HttpRequestGlobalConfig extends GlobalConfiguration {
 
     private static final XStream2 XSTREAM2 = new XStream2();
 
-    public HttpRequestGlobalConfig() {
+    public InstanaPluginGlobalConfig() {
         load();
     }
 
     @Initializer(before = InitMilestone.PLUGINS_STARTED)
     public static void xStreamCompatibility() {
-        XSTREAM2.addCompatibilityAlias("HttpRequest$DescriptorImpl", HttpRequestGlobalConfig.class);
+        XSTREAM2.addCompatibilityAlias("ReleaseEvent$DescriptorImpl", InstanaPluginGlobalConfig.class);
         XSTREAM2.addCompatibilityAlias("jenkins.plugins.instana.util.NameValuePair", HttpRequestNameValuePair.class);
     }
 
@@ -52,7 +52,7 @@ public class HttpRequestGlobalConfig extends GlobalConfiguration {
         Jenkins j = Jenkins.getInstance();
         if (j == null) return null;
         File rootDir = j.getRootDir();
-        File xmlFile = new File(rootDir, "HttpRequest.xml");
+        File xmlFile = new File(rootDir, "ReleaseEvent.xml");
         return new XmlFile(XSTREAM2, xmlFile);
     }
 
@@ -66,7 +66,7 @@ public class HttpRequestGlobalConfig extends GlobalConfiguration {
     }
 
 	public static FormValidation validateKeyName(String value) {
-		List<Authenticator> list = HttpRequestGlobalConfig.get().getAuthentications();
+		List<Authenticator> list = InstanaPluginGlobalConfig.get().getAuthentications();
 
 		int count = 0;
 		for (Authenticator basicAuthentication : list) {
@@ -82,8 +82,8 @@ public class HttpRequestGlobalConfig extends GlobalConfiguration {
 		return FormValidation.validateRequired(value);
 	}
 
-    public static HttpRequestGlobalConfig get() {
-        return GlobalConfiguration.all().get(HttpRequestGlobalConfig.class);
+    public static InstanaPluginGlobalConfig get() {
+        return GlobalConfiguration.all().get(InstanaPluginGlobalConfig.class);
     }
 
     public List<BasicDigestAuthentication> getBasicDigestAuthentications() {

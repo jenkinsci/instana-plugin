@@ -23,7 +23,7 @@ import jenkins.plugins.instana.util.RequestAction;
 /**
  * @author Martin d'Anjou
  */
-public class HttpRequestBackwardCompatibilityTest {
+public class ReleaseEventBackwardCompatibilityTest {
 
     @Rule
     public JenkinsRule j = new JenkinsRule();
@@ -32,19 +32,19 @@ public class HttpRequestBackwardCompatibilityTest {
     @Test
     public void defaultGlobalConfig() {
         // Test that config from 1.8.6 can be loaded
-        HttpRequestGlobalConfig cfg = HttpRequestGlobalConfig.get();
+        InstanaPluginGlobalConfig cfg = InstanaPluginGlobalConfig.get();
         assertEquals(Collections.emptyList(), cfg.getBasicDigestAuthentications());
         assertEquals(Collections.emptyList(), cfg.getFormAuthentications());
-        assertEquals("HttpRequest.xml", cfg.getConfigFile().getFile().getName());
+        assertEquals("ReleaseEvent.xml", cfg.getConfigFile().getFile().getName());
     }
 
     @LocalData
     @Test
     public void populatedGlobalConfig() {
         // Test that global config from 1.8.6 can be loaded
-        // Specifically tests the HttpRequestGlobalConfig.xStreamCompatibility() method
-        // and the HttpRequestGlobalConfig.getConfigFile() method
-        HttpRequestGlobalConfig cfg = HttpRequestGlobalConfig.get();
+        // Specifically tests the InstanaPluginGlobalConfig.xStreamCompatibility() method
+        // and the InstanaPluginGlobalConfig.getConfigFile() method
+        InstanaPluginGlobalConfig cfg = InstanaPluginGlobalConfig.get();
 
         List<BasicDigestAuthentication> bdas = cfg.getBasicDigestAuthentications();
         assertEquals(2,bdas.size());
@@ -81,39 +81,39 @@ public class HttpRequestBackwardCompatibilityTest {
     @Test
     public void oldConfigWithoutCustomHeadersShouldLoad() {
         // Test that a job config from 1.8.6 can be loaded
-        // Specifically tests the HttpRequest.readResolve() method
+        // Specifically tests the ReleaseEvent.readResolve() method
 		FreeStyleProject p = (FreeStyleProject) j.getInstance().getItem("old");
 
         List<Builder> builders = p.getBuilders();
 
-        HttpRequest httpRequest = (HttpRequest) builders.get(0);
-        assertEquals("url", httpRequest.getUrl());
-        assertNotNull(httpRequest.getCustomHeaders());
-        assertNotNull(httpRequest.getValidResponseCodes());
-        assertEquals("100:399", httpRequest.getValidResponseCodes());
+        ReleaseEvent releaseEvent = (ReleaseEvent) builders.get(0);
+        assertEquals("url", releaseEvent.getUrl());
+        assertNotNull(releaseEvent.getCustomHeaders());
+        assertNotNull(releaseEvent.getValidResponseCodes());
+        assertEquals("100:399", releaseEvent.getValidResponseCodes());
     }
 
     @LocalData
     @Test
     public void oldConfigWithCustomHeadersShouldLoad() {
         // Test that a job config from 1.8.8 can be loaded
-        // Specifically tests the HttpRequest.xStreamCompatibility() method
+        // Specifically tests the ReleaseEvent.xStreamCompatibility() method
 		FreeStyleProject p = (FreeStyleProject) j.getInstance().getItem("old");
 
         List<Builder> builders = p.getBuilders();
 
-        HttpRequest httpRequest = (HttpRequest) builders.get(0);
-        assertEquals("url", httpRequest.getUrl());
+        ReleaseEvent releaseEvent = (ReleaseEvent) builders.get(0);
+        assertEquals("url", releaseEvent.getUrl());
 
-        assertNotNull(httpRequest.getCustomHeaders());
-        List<HttpRequestNameValuePair> customHeaders = httpRequest.getCustomHeaders();
+        assertNotNull(releaseEvent.getCustomHeaders());
+        List<HttpRequestNameValuePair> customHeaders = releaseEvent.getCustomHeaders();
         assertEquals(1,customHeaders.size());
 		Iterator<HttpRequestNameValuePair> itr = customHeaders.iterator();
 		HttpRequestNameValuePair nvp = itr.next();
 		assertEquals("h1",nvp.getName());
         assertEquals("v1",nvp.getValue());
 
-        assertNotNull(httpRequest.getValidResponseCodes());
-        assertEquals("100:399", httpRequest.getValidResponseCodes());
+        assertNotNull(releaseEvent.getValidResponseCodes());
+        assertEquals("100:399", releaseEvent.getValidResponseCodes());
     }
 }

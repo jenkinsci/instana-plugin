@@ -31,7 +31,7 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 /**
  * @author Martin d'Anjou
  */
-public final class HttpRequestStep extends AbstractStepImpl {
+public final class ReleaseEventStep extends AbstractStepImpl {
 
     private @Nonnull String url;
 	private boolean ignoreSslErrors = DescriptorImpl.ignoreSslErrors;
@@ -54,7 +54,7 @@ public final class HttpRequestStep extends AbstractStepImpl {
 	private ResponseHandle responseHandle = DescriptorImpl.responseHandle;
 
     @DataBoundConstructor
-    public HttpRequestStep(String url) {
+    public ReleaseEventStep(String url) {
         this.url = url;
     }
 
@@ -238,7 +238,7 @@ public final class HttpRequestStep extends AbstractStepImpl {
 		if (acceptType != null && acceptType != MimeType.NOT_SET) {
 			headers.add(new HttpRequestNameValuePair("Accept", acceptType.getValue()));
 		}
-		headers.add(new HttpRequestNameValuePair("Authorization","apiToken " + HttpRequestGlobalConfig.get().getToken(), true));
+		headers.add(new HttpRequestNameValuePair("Authorization","apiToken " + InstanaPluginGlobalConfig.get().getToken(), true));
 		for (HttpRequestNameValuePair header : customHeaders) {
 			String headerName = header.getName();
 			String headerValue = header.getValue();
@@ -252,21 +252,21 @@ public final class HttpRequestStep extends AbstractStepImpl {
 
 	@Extension
     public static final class DescriptorImpl extends AbstractStepDescriptorImpl {
-        public static final boolean ignoreSslErrors = HttpRequest.DescriptorImpl.ignoreSslErrors;
-        public static final HttpMode httpMode                  = HttpRequest.DescriptorImpl.httpMode;
-        public static final String   httpProxy                 = HttpRequest.DescriptorImpl.httpProxy;
-        public static final String   validResponseCodes        = HttpRequest.DescriptorImpl.validResponseCodes;
-        public static final String   validResponseContent      = HttpRequest.DescriptorImpl.validResponseContent;
-        public static final MimeType acceptType                = HttpRequest.DescriptorImpl.acceptType;
-        public static final MimeType contentType               = HttpRequest.DescriptorImpl.contentType;
-        public static final int      timeout                   = HttpRequest.DescriptorImpl.timeout;
-        public static final Boolean  consoleLogResponseBody    = HttpRequest.DescriptorImpl.consoleLogResponseBody;
-        public static final Boolean  quiet                     = HttpRequest.DescriptorImpl.quiet;
-        public static final String   authentication            = HttpRequest.DescriptorImpl.authentication;
-        public static final String   requestBody               = HttpRequest.DescriptorImpl.requestBody;
-        public static final String   uploadFile                = HttpRequest.DescriptorImpl.uploadFile;
-        public static final String   multipartName             = HttpRequest.DescriptorImpl.multipartName;
-        public static final Boolean  useSystemProperties       = HttpRequest.DescriptorImpl.useSystemProperties;
+        public static final boolean ignoreSslErrors = ReleaseEvent.DescriptorImpl.ignoreSslErrors;
+        public static final HttpMode httpMode                  = ReleaseEvent.DescriptorImpl.httpMode;
+        public static final String   httpProxy                 = ReleaseEvent.DescriptorImpl.httpProxy;
+        public static final String   validResponseCodes        = ReleaseEvent.DescriptorImpl.validResponseCodes;
+        public static final String   validResponseContent      = ReleaseEvent.DescriptorImpl.validResponseContent;
+        public static final MimeType acceptType                = ReleaseEvent.DescriptorImpl.acceptType;
+        public static final MimeType contentType               = ReleaseEvent.DescriptorImpl.contentType;
+        public static final int      timeout                   = ReleaseEvent.DescriptorImpl.timeout;
+        public static final Boolean  consoleLogResponseBody    = ReleaseEvent.DescriptorImpl.consoleLogResponseBody;
+        public static final Boolean  quiet                     = ReleaseEvent.DescriptorImpl.quiet;
+        public static final String   authentication            = ReleaseEvent.DescriptorImpl.authentication;
+        public static final String   requestBody               = ReleaseEvent.DescriptorImpl.requestBody;
+        public static final String   uploadFile                = ReleaseEvent.DescriptorImpl.uploadFile;
+        public static final String   multipartName             = ReleaseEvent.DescriptorImpl.multipartName;
+        public static final Boolean  useSystemProperties       = ReleaseEvent.DescriptorImpl.useSystemProperties;
         public static final List <HttpRequestNameValuePair> customHeaders = Collections.<HttpRequestNameValuePair>emptyList();
         public static final String outputFile = "";
 		public static final ResponseHandle responseHandle = ResponseHandle.STRING;
@@ -307,11 +307,11 @@ public final class HttpRequestStep extends AbstractStepImpl {
 
         public ListBoxModel doFillAuthenticationItems(@AncestorInPath Item project,
 													  @QueryParameter String url) {
-            return HttpRequest.DescriptorImpl.fillAuthenticationItems(project, url);
+            return ReleaseEvent.DescriptorImpl.fillAuthenticationItems(project, url);
         }
 
         public FormValidation doCheckValidResponseCodes(@QueryParameter String value) {
-            return HttpRequest.DescriptorImpl.checkValidResponseCodes(value);
+            return ReleaseEvent.DescriptorImpl.checkValidResponseCodes(value);
         }
 
     }
@@ -319,7 +319,7 @@ public final class HttpRequestStep extends AbstractStepImpl {
     public static final class Execution extends AbstractSynchronousNonBlockingStepExecution<ResponseContentSupplier> {
 
         @Inject
-        private transient HttpRequestStep step;
+        private transient ReleaseEventStep step;
 
 		@StepContextParameter
 		private transient Run<?, ?> run;

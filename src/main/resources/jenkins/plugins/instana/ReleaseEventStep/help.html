@@ -3,7 +3,7 @@
         Performs an HTTP request, and returns a response object.
         <p>Usage example:</p>
         <pre>
-        def response = httpRequest 'http://localhost:8080/jenkins/api/json?pretty=true'
+        def response = releaseEvent 'http://localhost:8080/jenkins/api/json?pretty=true'
         println("Status: "+response.status)
         println("Content: "+response.content)
         </pre>

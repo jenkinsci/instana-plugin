@@ -18,7 +18,7 @@ import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
-import jenkins.plugins.instana.HttpRequestGlobalConfig;
+import jenkins.plugins.instana.InstanaPluginGlobalConfig;
 import jenkins.plugins.instana.util.HttpClientUtil;
 
 import jenkins.plugins.instana.util.RequestAction;
@@ -69,7 +69,7 @@ public class FormAuthentication extends AbstractDescribableImpl<FormAuthenticati
     public static class FormAuthenticationDescriptor extends Descriptor<FormAuthentication> {
 
         public FormValidation doCheckKeyName(@QueryParameter String value) {
-            return HttpRequestGlobalConfig.validateKeyName(value);
+            return InstanaPluginGlobalConfig.validateKeyName(value);
         }
 
         @Override

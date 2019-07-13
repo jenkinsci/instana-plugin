@@ -18,12 +18,12 @@ import jenkins.plugins.instana.util.RequestAction;
 /**
  * @author Martin d'Anjou
  */
-public class HttpRequestRoundTripTest {
+public class ReleaseEventRoundTripTest {
 
     @Rule
     public JenkinsRule j = new JenkinsRule();
 
-    public static HttpRequest before = new HttpRequest("http://domain/");
+    public static ReleaseEvent before = new ReleaseEvent("http://domain/");
 
     @Test
     public void configRoundtripGroup1() throws Exception {
@@ -65,7 +65,7 @@ public class HttpRequestRoundTripTest {
         List<BasicDigestAuthentication> bda = new ArrayList<BasicDigestAuthentication>();
         bda.add(new BasicDigestAuthentication("keyname1","username1","password1"));
         bda.add(new BasicDigestAuthentication("keyname2","username2","password2"));
-        HttpRequestGlobalConfig.get().setBasicDigestAuthentications(bda);
+        InstanaPluginGlobalConfig.get().setBasicDigestAuthentications(bda);
         configRoundTrip(before);
 
         List<HttpRequestNameValuePair> params = new ArrayList<HttpRequestNameValuePair>();
@@ -80,7 +80,7 @@ public class HttpRequestRoundTripTest {
         List<FormAuthentication> formAuthList = new ArrayList<FormAuthentication>();
         formAuthList.add(formAuth);
 
-        HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
+        InstanaPluginGlobalConfig.get().setFormAuthentications(formAuthList);
         configRoundTrip(before);
 
         List<HttpRequestNameValuePair> customHeaders = new ArrayList<HttpRequestNameValuePair>();
@@ -97,8 +97,8 @@ public class HttpRequestRoundTripTest {
         configRoundTrip(before);
     }
 
-    private void configRoundTrip(HttpRequest before) throws Exception {
-        HttpRequest after = j.configRoundtrip(before);
+    private void configRoundTrip(ReleaseEvent before) throws Exception {
+        ReleaseEvent after = j.configRoundtrip(before);
         j.assertEqualBeans(before, after, "httpMode,passBuildParameters");
         j.assertEqualBeans(before, after, "url");
         j.assertEqualBeans(before, after, "validResponseCodes,validResponseContent");
@@ -118,8 +118,8 @@ public class HttpRequestRoundTripTest {
         }
 
         // Basic authentication check
-        List<BasicDigestAuthentication> beforeBdas = HttpRequestGlobalConfig.get().getBasicDigestAuthentications();
-        List<BasicDigestAuthentication> afterBdas  = HttpRequestGlobalConfig.get().getBasicDigestAuthentications();
+        List<BasicDigestAuthentication> beforeBdas = InstanaPluginGlobalConfig.get().getBasicDigestAuthentications();
+        List<BasicDigestAuthentication> afterBdas  = InstanaPluginGlobalConfig.get().getBasicDigestAuthentications();
         assertEquals(beforeBdas.size(), afterBdas.size());
         for (int idx = 0; idx < beforeBdas.size(); idx++) {
             BasicDigestAuthentication beforeBda = beforeBdas.get(idx);
@@ -130,8 +130,8 @@ public class HttpRequestRoundTripTest {
         }
 
         // Form authentication check
-        List<FormAuthentication> beforeFas = HttpRequestGlobalConfig.get().getFormAuthentications();
-        List<FormAuthentication> afterFas  = HttpRequestGlobalConfig.get().getFormAuthentications();
+        List<FormAuthentication> beforeFas = InstanaPluginGlobalConfig.get().getFormAuthentications();
+        List<FormAuthentication> afterFas  = InstanaPluginGlobalConfig.get().getFormAuthentications();
         assertEquals(beforeFas.size(), afterFas.size());
         for (int idx = 0; idx < beforeFas.size(); idx++) {
             FormAuthentication beforeFa = beforeFas.get(idx);

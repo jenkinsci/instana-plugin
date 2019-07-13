@@ -27,7 +27,7 @@ import org.eclipse.jetty.util.MultiPartInputStreamParser;
 
 import com.google.common.collect.Iterables;
 
-import jenkins.plugins.instana.HttpRequestTestBase.SimpleHandler;
+import jenkins.plugins.instana.ReleaseEventTestBase.SimpleHandler;
 
 /**
  * @author Janario Oliveira
@@ -319,6 +319,6 @@ public class Registers {
 	}
 
 	private static void registerHandler(String target, HttpMode method, SimpleHandler handler) {
-		HttpRequestTestBase.registerHandler(target, method, handler);
+		ReleaseEventTestBase.registerHandler(target, method, handler);
 	}
 }

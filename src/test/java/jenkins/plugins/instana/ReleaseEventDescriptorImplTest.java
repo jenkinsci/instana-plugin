@@ -13,21 +13,21 @@ import org.junit.Test;
 /**
  * @author Martin Mosegaard Amdisen
  */
-public class HttpRequestDescriptorImplTest {
+public class ReleaseEventDescriptorImplTest {
 
     private static final List<Range<Integer>> DEFAULT_VALID_RESPONSE_CODES_RANGE = Collections.singletonList(Ranges.closed(100, 399));
 
     @Test
     public void parseToRangeShouldHandleEmptyString() {
         String value = "";
-        List<Range<Integer>> ranges = HttpRequest.DescriptorImpl.parseToRange(value);
+        List<Range<Integer>> ranges = ReleaseEvent.DescriptorImpl.parseToRange(value);
         assertEquals(DEFAULT_VALID_RESPONSE_CODES_RANGE, ranges);
     }
 
     @Test
     public void parseToRangeShouldHandleNull() {
         String value = null;
-        List<Range<Integer>> ranges = HttpRequest.DescriptorImpl.parseToRange(value);
+        List<Range<Integer>> ranges = ReleaseEvent.DescriptorImpl.parseToRange(value);
         assertEquals(DEFAULT_VALID_RESPONSE_CODES_RANGE, ranges);
     }
 }

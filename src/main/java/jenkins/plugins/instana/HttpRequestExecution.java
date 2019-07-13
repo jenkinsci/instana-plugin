@@ -60,8 +60,8 @@ import hudson.remoting.RemoteOutputStream;
 import hudson.security.ACL;
 import jenkins.security.MasterToSlaveCallable;
 
-import jenkins.plugins.instana.HttpRequest.DescriptorImpl;
-import jenkins.plugins.instana.HttpRequestStep.Execution;
+import jenkins.plugins.instana.ReleaseEvent.DescriptorImpl;
+import jenkins.plugins.instana.ReleaseEventStep.Execution;
 import jenkins.plugins.instana.auth.Authenticator;
 import jenkins.plugins.instana.auth.CredentialBasicAuthentication;
 import jenkins.plugins.instana.util.HttpClientUtil;
@@ -98,7 +98,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 	private final OutputStream remoteLogger;
 	private transient PrintStream localLogger;
 
-	static HttpRequestExecution from(HttpRequest http,
+	static HttpRequestExecution from(ReleaseEvent http,
 									 EnvVars envVars, AbstractBuild<?, ?> build, TaskListener taskListener) {
 		try {
 			String url = http.resolveUrl(envVars, build, taskListener);
@@ -126,7 +126,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		}
 	}
 
-	static HttpRequestExecution from(HttpRequestStep step, TaskListener taskListener, Execution execution) {
+	static HttpRequestExecution from(ReleaseEventStep step, TaskListener taskListener, Execution execution) {
 		List<HttpRequestNameValuePair> headers = step.resolveHeaders();
 		FilePath outputFile = execution.resolveOutputFile();
 		FilePath uploadFile = execution.resolveUploadFile();
@@ -164,7 +164,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		this.headers = headers;
 		this.timeout = timeout != null ? timeout : -1;
 		if (authentication != null && !authentication.isEmpty()) {
-			Authenticator auth = HttpRequestGlobalConfig.get().getAuthentication(authentication);
+			Authenticator auth = InstanaPluginGlobalConfig.get().getAuthentication(authentication);
 
 			if (auth == null) {
 				StandardUsernamePasswordCredentials credential = CredentialsMatchers.firstOrNull(

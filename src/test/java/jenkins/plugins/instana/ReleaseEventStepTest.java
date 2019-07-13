@@ -40,7 +40,7 @@ import jenkins.plugins.instana.util.RequestAction;
 /**
  * @author Martin d'Anjou
  */
-public class HttpRequestStepTest extends HttpRequestTestBase {
+public class ReleaseEventStepTest extends ReleaseEventTestBase {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -484,7 +484,7 @@ public class HttpRequestStepTest extends HttpRequestTestBase {
         registerBasicCredential("keyname1", "username1", "password1");
         registerBasicCredential("keyname2", "username2", "password2");
 
-        // Prepare HttpRequest
+        // Prepare ReleaseEvent
         WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
         proj.setDefinition(new CpsFlowDefinition(
             "def response = httpRequest url:'"+baseURL()+"/basicAuth',\n" +
@@ -520,9 +520,9 @@ public class HttpRequestStepTest extends HttpRequestTestBase {
         formAuthList.add(formAuth);
 
         // Store the configuration
-        HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
+        InstanaPluginGlobalConfig.get().setFormAuthentications(formAuthList);
 
-        // Prepare HttpRequest
+        // Prepare ReleaseEvent
         WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
         proj.setDefinition(new CpsFlowDefinition(
             "def response = httpRequest url:'"+baseURL()+"/formAuth',\n" +
@@ -555,9 +555,9 @@ public class HttpRequestStepTest extends HttpRequestTestBase {
         formAuthList.add(formAuth);
 
         // Store the configuration
-        HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
+        InstanaPluginGlobalConfig.get().setFormAuthentications(formAuthList);
 
-        // Prepare HttpRequest
+        // Prepare ReleaseEvent
         WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
         proj.setDefinition(new CpsFlowDefinition(
             "def response = httpRequest url:'"+baseURL()+"/formAuthBad',\n" +
@@ -589,9 +589,9 @@ public class HttpRequestStepTest extends HttpRequestTestBase {
         formAuthList.add(formAuth);
 
         // Store the configuration
-        HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
+        InstanaPluginGlobalConfig.get().setFormAuthentications(formAuthList);
 
-        // Prepare HttpRequest
+        // Prepare ReleaseEvent
         WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
         proj.setDefinition(new CpsFlowDefinition(
             "def response = httpRequest url:'"+baseURL()+"/non-existent',\n" +
@@ -647,7 +647,7 @@ public class HttpRequestStepTest extends HttpRequestTestBase {
         String responseText = "File upload successful!";
         registerFileUpload(testFolder, uploadFile, responseText);
 
-        // Prepare HttpRequest
+        // Prepare ReleaseEvent
         WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "uploadFile");
         proj.setDefinition(new CpsFlowDefinition(
                 "node {\n"+

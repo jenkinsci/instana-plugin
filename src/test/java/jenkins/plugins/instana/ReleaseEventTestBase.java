@@ -36,7 +36,7 @@ import com.google.common.io.CharStreams;
 /**
  * @author Martin d'Anjou
  */
-public class HttpRequestTestBase {
+public class ReleaseEventTestBase {
 
 	private static ServerRunning SERVER;
 	static final String ALL_IS_WELL = "All is well";

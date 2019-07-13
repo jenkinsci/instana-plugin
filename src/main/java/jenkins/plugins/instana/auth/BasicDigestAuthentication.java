@@ -13,7 +13,7 @@ import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
-import jenkins.plugins.instana.HttpRequestGlobalConfig;
+import jenkins.plugins.instana.InstanaPluginGlobalConfig;
 
 /**
  * @author Janario Oliveira
@@ -58,7 +58,7 @@ public class BasicDigestAuthentication extends AbstractDescribableImpl<BasicDige
     public static class BasicDigestAuthenticationDescriptor extends Descriptor<BasicDigestAuthentication> {
 
         public FormValidation doCheckKeyName(@QueryParameter String value) {
-            return HttpRequestGlobalConfig.validateKeyName(value);
+            return InstanaPluginGlobalConfig.validateKeyName(value);
         }
 
         public FormValidation doCheckUserName(@QueryParameter String value) {
