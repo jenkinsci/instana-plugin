@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,10 +19,10 @@ import hudson.util.XStream2;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
 
-import jenkins.plugins.http_request.auth.Authenticator;
-import jenkins.plugins.http_request.auth.BasicDigestAuthentication;
-import jenkins.plugins.http_request.auth.FormAuthentication;
-import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
+import jenkins.plugins.instana.auth.Authenticator;
+import jenkins.plugins.instana.auth.BasicDigestAuthentication;
+import jenkins.plugins.instana.auth.FormAuthentication;
+import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 /**
  * @author Martin d'Anjou
@@ -43,8 +43,8 @@ public class HttpRequestGlobalConfig extends GlobalConfiguration {
 
     @Initializer(before = InitMilestone.PLUGINS_STARTED)
     public static void xStreamCompatibility() {
-        XSTREAM2.addCompatibilityAlias("jenkins.plugins.http_request.HttpRequest$DescriptorImpl", HttpRequestGlobalConfig.class);
-        XSTREAM2.addCompatibilityAlias("jenkins.plugins.http_request.util.NameValuePair", HttpRequestNameValuePair.class);
+        XSTREAM2.addCompatibilityAlias("HttpRequest$DescriptorImpl", HttpRequestGlobalConfig.class);
+        XSTREAM2.addCompatibilityAlias("jenkins.plugins.instana.util.NameValuePair", HttpRequestNameValuePair.class);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class HttpRequestGlobalConfig extends GlobalConfiguration {
         Jenkins j = Jenkins.getInstance();
         if (j == null) return null;
         File rootDir = j.getRootDir();
-        File xmlFile = new File(rootDir, "jenkins.plugins.http_request.HttpRequest.xml");
+        File xmlFile = new File(rootDir, "HttpRequest.xml");
         return new XmlFile(XSTREAM2, xmlFile);
     }
 

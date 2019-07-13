@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import static org.junit.Assert.assertEquals;
 

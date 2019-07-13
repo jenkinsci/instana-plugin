@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -15,10 +15,10 @@ import org.jvnet.hudson.test.recipes.LocalData;
 import hudson.model.FreeStyleProject;
 import hudson.tasks.Builder;
 
-import jenkins.plugins.http_request.auth.BasicDigestAuthentication;
-import jenkins.plugins.http_request.auth.FormAuthentication;
-import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
-import jenkins.plugins.http_request.util.RequestAction;
+import jenkins.plugins.instana.auth.BasicDigestAuthentication;
+import jenkins.plugins.instana.auth.FormAuthentication;
+import jenkins.plugins.instana.util.HttpRequestNameValuePair;
+import jenkins.plugins.instana.util.RequestAction;
 
 /**
  * @author Martin d'Anjou
@@ -35,7 +35,7 @@ public class HttpRequestBackwardCompatibilityTest {
         HttpRequestGlobalConfig cfg = HttpRequestGlobalConfig.get();
         assertEquals(Collections.emptyList(), cfg.getBasicDigestAuthentications());
         assertEquals(Collections.emptyList(), cfg.getFormAuthentications());
-        assertEquals("jenkins.plugins.http_request.HttpRequest.xml", cfg.getConfigFile().getFile().getName());
+        assertEquals("HttpRequest.xml", cfg.getConfigFile().getFile().getName());
     }
 
     @LocalData

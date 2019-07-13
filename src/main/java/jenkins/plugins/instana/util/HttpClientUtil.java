@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.util;
+package jenkins.plugins.instana.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import org.apache.http.protocol.HttpContext;
 
 import com.google.common.base.Strings;
 
-import jenkins.plugins.http_request.HttpMode;
+import jenkins.plugins.instana.HttpMode;
 
 /**
  * @author Janario Oliveira

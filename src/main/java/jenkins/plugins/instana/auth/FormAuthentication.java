@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.auth;
+package jenkins.plugins.instana.auth;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -18,10 +18,10 @@ import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
+import jenkins.plugins.instana.HttpRequestGlobalConfig;
+import jenkins.plugins.instana.util.HttpClientUtil;
 
-import jenkins.plugins.http_request.HttpRequestGlobalConfig;
-import jenkins.plugins.http_request.util.HttpClientUtil;
-import jenkins.plugins.http_request.util.RequestAction;
+import jenkins.plugins.instana.util.RequestAction;
 
 /**
  * @author Janario Oliveira

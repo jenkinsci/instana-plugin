@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import java.io.BufferedReader;
 import java.io.IOException;

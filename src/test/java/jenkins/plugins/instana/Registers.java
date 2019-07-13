@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -27,7 +27,7 @@ import org.eclipse.jetty.util.MultiPartInputStreamParser;
 
 import com.google.common.collect.Iterables;
 
-import jenkins.plugins.http_request.HttpRequestTestBase.SimpleHandler;
+import jenkins.plugins.instana.HttpRequestTestBase.SimpleHandler;
 
 /**
  * @author Janario Oliveira

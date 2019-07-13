@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.util;
+package jenkins.plugins.instana.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -44,10 +44,10 @@ import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 import hudson.util.ListBoxModel.Option;
 
-import jenkins.plugins.http_request.auth.BasicDigestAuthentication;
-import jenkins.plugins.http_request.auth.FormAuthentication;
-import jenkins.plugins.http_request.util.HttpClientUtil;
-import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
+import jenkins.plugins.instana.auth.BasicDigestAuthentication;
+import jenkins.plugins.instana.auth.FormAuthentication;
+import jenkins.plugins.instana.util.HttpClientUtil;
+import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 /**
  * @author Janario Oliveira

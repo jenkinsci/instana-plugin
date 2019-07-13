@@ -30,15 +30,13 @@ THE SOFTWARE.
 		<version>2.36</version>
 	</parent>
 
-	<artifactId>http_request</artifactId>
-	<version>1.8.24-SNAPSHOT</version>
+	<artifactId>instana_plugin</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>hpi</packaging>
-	<name>HTTP Request Plugin</name>
+	<name>Instana Jenkins plugin</name>
 	<description>
-		This plugin sends a http request to an url with some parameters.
-		See the release notes for changes and compatibility https://github.com/jenkinsci/http-request-plugin/releases
 	</description>
-	<url>http://wiki.jenkins-ci.org/display/JENKINS/HTTP+Request+Plugin</url>
+	<url></url>
 
 	<licenses>
 		<license>
@@ -146,25 +144,4 @@ THE SOFTWARE.
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<scm>
-		<connection>scm:git:ssh://github.com/jenkinsci/http-request-plugin.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/jenkinsci/http-request-plugin.git
-		</developerConnection>
-		<url>https://github.com/jenkinsci/http-request-plugin</url>
-		<tag>HEAD</tag>
-	</scm>
-	<developers>
-		<developer>
-			<id>janario</id>
-			<name>Janario Oliveira</name>
-			<email>janario.oliveira@gmail.com</email>
-		</developer>
-	</developers>
-	<contributors>
-		<contributor>
-			<name>Martin d'Anjou</name>
-			<email>martin.danjou14@gmail.com</email>
-		</contributor>
-	</contributors>
 </project>

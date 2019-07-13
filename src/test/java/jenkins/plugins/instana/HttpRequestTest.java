@@ -1,21 +1,21 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
-import static jenkins.plugins.http_request.Registers.registerFileUpload;
+import static jenkins.plugins.instana.Registers.registerFileUpload;
 
-import static jenkins.plugins.http_request.Registers.registerAcceptedTypeRequestChecker;
-import static jenkins.plugins.http_request.Registers.registerBasicAuth;
-import static jenkins.plugins.http_request.Registers.registerCheckBuildParameters;
-import static jenkins.plugins.http_request.Registers.registerCheckRequestBody;
-import static jenkins.plugins.http_request.Registers.registerCheckRequestBodyWithTag;
-import static jenkins.plugins.http_request.Registers.registerContentTypeRequestChecker;
-import static jenkins.plugins.http_request.Registers.registerCustomHeaders;
-import static jenkins.plugins.http_request.Registers.registerCustomHeadersResolved;
-import static jenkins.plugins.http_request.Registers.registerFormAuth;
-import static jenkins.plugins.http_request.Registers.registerFormAuthBad;
-import static jenkins.plugins.http_request.Registers.registerInvalidStatusCode;
-import static jenkins.plugins.http_request.Registers.registerReqAction;
-import static jenkins.plugins.http_request.Registers.registerRequestChecker;
-import static jenkins.plugins.http_request.Registers.registerTimeout;
+import static jenkins.plugins.instana.Registers.registerAcceptedTypeRequestChecker;
+import static jenkins.plugins.instana.Registers.registerBasicAuth;
+import static jenkins.plugins.instana.Registers.registerCheckBuildParameters;
+import static jenkins.plugins.instana.Registers.registerCheckRequestBody;
+import static jenkins.plugins.instana.Registers.registerCheckRequestBodyWithTag;
+import static jenkins.plugins.instana.Registers.registerContentTypeRequestChecker;
+import static jenkins.plugins.instana.Registers.registerCustomHeaders;
+import static jenkins.plugins.instana.Registers.registerCustomHeadersResolved;
+import static jenkins.plugins.instana.Registers.registerFormAuth;
+import static jenkins.plugins.instana.Registers.registerFormAuthBad;
+import static jenkins.plugins.instana.Registers.registerInvalidStatusCode;
+import static jenkins.plugins.instana.Registers.registerReqAction;
+import static jenkins.plugins.instana.Registers.registerRequestChecker;
+import static jenkins.plugins.instana.Registers.registerTimeout;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -48,9 +48,9 @@ import hudson.model.ParametersAction;
 import hudson.model.Result;
 import hudson.model.StringParameterValue;
 
-import jenkins.plugins.http_request.auth.FormAuthentication;
-import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
-import jenkins.plugins.http_request.util.RequestAction;
+import jenkins.plugins.instana.auth.FormAuthentication;
+import jenkins.plugins.instana.util.HttpRequestNameValuePair;
+import jenkins.plugins.instana.util.RequestAction;
 
 /**
  * @author Martin d'Anjou

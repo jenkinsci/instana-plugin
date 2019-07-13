@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import hudson.model.TaskListener;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
 
-import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
+import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 /**
  * @author Martin d'Anjou

@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request.util;
+package jenkins.plugins.instana.util;
 
 import java.io.Serializable;
 import java.net.URL;
@@ -14,8 +14,7 @@ import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 import hudson.util.ListBoxModel;
-
-import jenkins.plugins.http_request.HttpMode;
+import jenkins.plugins.instana.HttpMode;
 
 /**
  * @author Janario Oliveira

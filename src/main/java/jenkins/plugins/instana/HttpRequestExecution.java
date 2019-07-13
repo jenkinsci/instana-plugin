@@ -1,4 +1,4 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +30,6 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -61,13 +60,13 @@ import hudson.remoting.RemoteOutputStream;
 import hudson.security.ACL;
 import jenkins.security.MasterToSlaveCallable;
 
-import jenkins.plugins.http_request.HttpRequest.DescriptorImpl;
-import jenkins.plugins.http_request.HttpRequestStep.Execution;
-import jenkins.plugins.http_request.auth.Authenticator;
-import jenkins.plugins.http_request.auth.CredentialBasicAuthentication;
-import jenkins.plugins.http_request.util.HttpClientUtil;
-import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
-import jenkins.plugins.http_request.util.RequestAction;
+import jenkins.plugins.instana.HttpRequest.DescriptorImpl;
+import jenkins.plugins.instana.HttpRequestStep.Execution;
+import jenkins.plugins.instana.auth.Authenticator;
+import jenkins.plugins.instana.auth.CredentialBasicAuthentication;
+import jenkins.plugins.instana.util.HttpClientUtil;
+import jenkins.plugins.instana.util.HttpRequestNameValuePair;
+import jenkins.plugins.instana.util.RequestAction;
 
 /**
  * @author Janario Oliveira

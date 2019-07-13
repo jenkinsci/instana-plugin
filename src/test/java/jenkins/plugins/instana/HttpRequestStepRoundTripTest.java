@@ -1,13 +1,13 @@
-package jenkins.plugins.http_request;
+package jenkins.plugins.instana;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import jenkins.plugins.http_request.auth.BasicDigestAuthentication;
-import jenkins.plugins.http_request.auth.FormAuthentication;
-import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
-import jenkins.plugins.http_request.util.RequestAction;
+import jenkins.plugins.instana.auth.BasicDigestAuthentication;
+import jenkins.plugins.instana.auth.FormAuthentication;
+import jenkins.plugins.instana.util.HttpRequestNameValuePair;
+import jenkins.plugins.instana.util.RequestAction;
 
 import org.jenkinsci.plugins.workflow.steps.StepConfigTester;
 import org.junit.Rule;
