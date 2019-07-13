@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.sf.json.JSONObject;
 
 import org.kohsuke.stapler.StaplerRequest;
@@ -28,6 +30,8 @@ import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
 @Extension
 public class HttpRequestGlobalConfig extends GlobalConfiguration {
 
+	private @Nonnull String instanaUrl;
+	private @Nonnull String token;
     private List<BasicDigestAuthentication> basicDigestAuthentications = new ArrayList<BasicDigestAuthentication>();
     private List<FormAuthentication> formAuthentications = new ArrayList<FormAuthentication>();
 
@@ -99,6 +103,22 @@ public class HttpRequestGlobalConfig extends GlobalConfiguration {
             List<FormAuthentication> formAuthentications) {
         this.formAuthentications = formAuthentications;
     }
+
+    public String getInstanaUrl(){
+    	return instanaUrl;
+	}
+
+	public void setInstanaUrl(String instanaUrl){
+		this.instanaUrl= instanaUrl;
+	}
+
+	public String getToken(){
+    	return token;
+	}
+
+	public void setToken(String token){
+    	this.token=token;
+	}
 
     public List<Authenticator> getAuthentications() {
         List<Authenticator> list = new ArrayList<Authenticator>();

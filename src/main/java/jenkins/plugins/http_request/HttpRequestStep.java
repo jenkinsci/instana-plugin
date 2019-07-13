@@ -34,7 +34,6 @@ import jenkins.plugins.http_request.util.HttpRequestNameValuePair;
 public final class HttpRequestStep extends AbstractStepImpl {
 
     private @Nonnull String url;
-    private @Nonnull String token;
 	private boolean ignoreSslErrors = DescriptorImpl.ignoreSslErrors;
 	private HttpMode httpMode                 = DescriptorImpl.httpMode;
     private String httpProxy                  = DescriptorImpl.httpProxy;
@@ -55,18 +54,13 @@ public final class HttpRequestStep extends AbstractStepImpl {
 	private ResponseHandle responseHandle = DescriptorImpl.responseHandle;
 
     @DataBoundConstructor
-    public HttpRequestStep(String url, String token) {
+    public HttpRequestStep(String url) {
         this.url = url;
-        this.token = token;
     }
 
     public String getUrl() {
         return url;
     }
-
-	public String getToken() {
-		return token;
-	}
 
 	public boolean isIgnoreSslErrors() {
 		return ignoreSslErrors;
@@ -244,7 +238,7 @@ public final class HttpRequestStep extends AbstractStepImpl {
 		if (acceptType != null && acceptType != MimeType.NOT_SET) {
 			headers.add(new HttpRequestNameValuePair("Accept", acceptType.getValue()));
 		}
-		headers.add(new HttpRequestNameValuePair("Authorization","apiToken " + token, true));
+		headers.add(new HttpRequestNameValuePair("Authorization","apiToken " + HttpRequestGlobalConfig.get().getToken(), true));
 		for (HttpRequestNameValuePair header : customHeaders) {
 			String headerName = header.getName();
 			String headerValue = header.getValue();
@@ -283,7 +277,7 @@ public final class HttpRequestStep extends AbstractStepImpl {
 
 		@Override
         public String getFunctionName() {
-            return "httpRequest";
+            return "releaseEvent";
         }
 
         @Override

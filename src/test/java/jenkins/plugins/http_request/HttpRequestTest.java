@@ -66,7 +66,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Run build
@@ -85,7 +85,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setQuiet(true);
 
 		// Run build
@@ -110,7 +110,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setConsoleLogResponseBody(true);
 		httpRequest.setValidResponseContent(findMe);
 
@@ -130,7 +130,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setConsoleLogResponseBody(true);
 		httpRequest.setValidResponseContent("bad content");
 
@@ -151,7 +151,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Expect a mime type that matches the response
@@ -173,7 +173,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Expect a mime type that does not match the response
@@ -195,7 +195,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerCheckBuildParameters();
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkBuildParameters","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkBuildParameters");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Activate passBuildParameters
@@ -218,7 +218,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerCheckRequestBodyWithTag();
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkRequestBodyWithTag","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkRequestBodyWithTag");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Activate requsetBody
@@ -247,7 +247,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Activate passBuildParameters without parameters present
@@ -269,7 +269,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Activate passBuildParameters
@@ -291,7 +291,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerCheckRequestBody();
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkRequestBody","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/checkRequestBody");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Activate requsetBody
@@ -314,7 +314,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Activate passBuildParameters
@@ -343,7 +343,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 	public void doRequest(final HttpMode method) throws Exception {
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/do" + method.toString(),"");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/do" + method.toString());
 		httpRequest.setHttpMode(method);
 		httpRequest.setConsoleLogResponseBody(true);
 
@@ -368,7 +368,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerInvalidStatusCode();
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/invalidStatusCode","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/invalidStatusCode");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Run build
@@ -387,7 +387,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerInvalidStatusCode();
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/invalidStatusCode","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/invalidStatusCode");
 		httpRequest.setValidResponseCodes("100:599");
 		httpRequest.setConsoleLogResponseBody(true);
 
@@ -407,7 +407,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter");
 		httpRequest.setValidResponseCodes("599:100");
 		httpRequest.setConsoleLogResponseBody(true);
 
@@ -426,7 +426,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter");
 		httpRequest.setValidResponseCodes("text");
 		httpRequest.setConsoleLogResponseBody(true);
 
@@ -445,7 +445,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter");
 		httpRequest.setValidResponseCodes("1:text");
 		httpRequest.setConsoleLogResponseBody(true);
 
@@ -464,7 +464,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doesNotMatter");
 		httpRequest.setValidResponseCodes("1:2:3");
 		httpRequest.setConsoleLogResponseBody(true);
 
@@ -490,7 +490,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 	public void sendContentType(final MimeType mimeType, String checkMessage, String body) throws Exception {
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/incoming_" + mimeType.toString(),"");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/incoming_" + mimeType.toString());
 		httpRequest.setConsoleLogResponseBody(true);
 		httpRequest.setContentType(mimeType);
         if (body != null) {
@@ -534,7 +534,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 	public void sendAcceptType(final MimeType mimeType) throws Exception {
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/accept_" + mimeType.toString(),"");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/accept_" + mimeType.toString());
 		httpRequest.setConsoleLogResponseBody(true);
 		httpRequest.setAcceptType(mimeType);
 
@@ -554,7 +554,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setOutputFile("file.txt");
 		httpRequest.setConsoleLogResponseBody(true);
 
@@ -582,7 +582,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerRequestChecker(HttpMode.GET);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/doGET");
 		httpRequest.setOutputFile("file.txt");
 
 		// Run build
@@ -610,7 +610,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/timeout","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/timeout");
 		httpRequest.setTimeout(2);
 
 		// Run build
@@ -630,7 +630,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		List<HttpRequestNameValuePair> customHeaders = new ArrayList<HttpRequestNameValuePair>();
 		customHeaders.add(new HttpRequestNameValuePair("customHeader", "value1"));
 		customHeaders.add(new HttpRequestNameValuePair("customHeader", "value2"));
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/customHeaders","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/customHeaders");
 		httpRequest.setCustomHeaders(customHeaders);
 
 		// Run build
@@ -648,7 +648,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerCustomHeadersResolved();
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/customHeadersResolved","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/customHeadersResolved");
 		httpRequest.setConsoleLogResponseBody(true);
 
 		// Activate requsetBody
@@ -682,7 +682,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/basicAuth","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/basicAuth");
 		httpRequest.setAuthentication("non-existent-key");
 
 		// Run build
@@ -704,7 +704,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerBasicCredential("keyname2", "username2", "password2");
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/basicAuth","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/basicAuth");
 		httpRequest.setAuthentication("keyname1");
 
 		// Run build
@@ -772,7 +772,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		formAuthList.add(formAuth);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/test-auth","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/test-auth");
 		HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
 		httpRequest.setAuthentication("Form");
 
@@ -805,7 +805,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		formAuthList.add(formAuth);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/formAuth","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/formAuth");
 		HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
 		httpRequest.setAuthentication("keyname");
 
@@ -837,7 +837,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		formAuthList.add(formAuth);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/formAuthBad","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/formAuthBad");
 		httpRequest.setConsoleLogResponseBody(true);
 		HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
 		httpRequest.setAuthentication("keyname");
@@ -872,7 +872,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		formAuthList.add(formAuth);
 
 		// Prepare HttpRequest - the actual request won't be sent
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/non-existent","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/non-existent");
 		httpRequest.setConsoleLogResponseBody(true);
 		HttpRequestGlobalConfig.get().setFormAuthentications(formAuthList);
 
@@ -927,7 +927,7 @@ public class HttpRequestTest extends HttpRequestTestBase {
 		registerFileUpload(testFolder, uploadFile, responseText);
 
 		// Prepare HttpRequest
-		HttpRequest httpRequest = new HttpRequest(baseURL() + "/uploadFile","");
+		HttpRequest httpRequest = new HttpRequest(baseURL() + "/uploadFile");
 		httpRequest.setHttpMode(HttpMode.POST);
 		httpRequest.setValidResponseCodes("201");
 		httpRequest.setConsoleLogResponseBody(true);

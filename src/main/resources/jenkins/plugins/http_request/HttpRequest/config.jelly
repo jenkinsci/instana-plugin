@@ -12,6 +12,20 @@
     <f:entry field="ignoreSslErrors" title="Ignore Ssl errors?" help="/plugin/http_request/help-ignoreSslErrors.html">
         <f:booleanRadio />
     </f:entry>
+    <f:section title="Release">
+        <f:entry field="releaseEvent" title="Push release event" help="/plugin/http_request/help-ignoreSslErrors.html">
+            <f:booleanRadio />
+        </f:entry>
+		<f:entry field="releaseName" title="Release name" help="/plugin/http_request/help-acceptType.html">
+			<f:textbox />
+		</f:entry>
+		<f:entry field="releaseStartTimestamp" title="Start timestamp" help="/plugin/http_request/help-contentType.html">
+			<f:textbox />
+		</f:entry>
+		<f:entry field="releaseEndTimestamp" title="End timestamp" help="/plugin/http_request/help-contentType.html">
+        	<f:textbox />
+       	</f:entry>
+    </f:section>
     <f:entry field="httpProxy" title="Http Proxy" help="/plugin/http_request/help-httpProxy.html">
         <f:textbox />
     </f:entry>
