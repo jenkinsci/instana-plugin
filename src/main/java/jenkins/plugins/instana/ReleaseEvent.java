@@ -1,7 +1,5 @@
 package jenkins.plugins.instana;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -11,42 +9,22 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.QueryParameter;
-
-import com.cloudbees.plugins.credentials.common.AbstractIdCredentialsListBoxModel;
-import com.cloudbees.plugins.credentials.common.StandardCredentials;
-import com.cloudbees.plugins.credentials.common.StandardListBoxModel;
-import com.cloudbees.plugins.credentials.common.StandardUsernamePasswordCredentials;
-import com.cloudbees.plugins.credentials.domains.URIRequirementBuilder;
-import com.google.common.base.Strings;
-import com.google.common.collect.Range;
-import com.google.common.collect.Ranges;
 
 import hudson.EnvVars;
 import hudson.Extension;
-import hudson.FilePath;
 import hudson.Launcher;
 import hudson.init.InitMilestone;
 import hudson.init.Initializer;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
-import hudson.model.Item;
 import hudson.model.Items;
 import hudson.model.TaskListener;
-import hudson.security.ACL;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
-import hudson.util.FormValidation;
-import hudson.util.ListBoxModel;
-import hudson.util.ListBoxModel.Option;
 
-import jenkins.plugins.instana.auth.BasicDigestAuthentication;
-import jenkins.plugins.instana.auth.FormAuthentication;
-import jenkins.plugins.instana.util.HttpClientUtil;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 /**
@@ -54,197 +32,37 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
  */
 public class ReleaseEvent extends Builder {
 
-	private @Nonnull String url;
-	private Boolean ignoreSslErrors = DescriptorImpl.ignoreSslErrors;
-	private HttpMode httpMode                 = DescriptorImpl.httpMode;
-	private String httpProxy                  = DescriptorImpl.httpProxy;
-    private Boolean passBuildParameters       = DescriptorImpl.passBuildParameters;
-    private String validResponseCodes         = DescriptorImpl.validResponseCodes;
-    private String validResponseContent       = DescriptorImpl.validResponseContent;
-    private MimeType acceptType               = DescriptorImpl.acceptType;
-    private MimeType contentType              = DescriptorImpl.contentType;
-    private String outputFile                 = DescriptorImpl.outputFile;
-    private Integer timeout                   = DescriptorImpl.timeout;
-    private Boolean consoleLogResponseBody    = DescriptorImpl.consoleLogResponseBody;
-    private Boolean quiet                     = DescriptorImpl.quiet;
-    private String authentication             = DescriptorImpl.authentication;
-    private String requestBody                = DescriptorImpl.requestBody;
-    private String uploadFile                 = DescriptorImpl.uploadFile;
-    private String multipartName              = DescriptorImpl.multipartName;
-    private Boolean useSystemProperties       = DescriptorImpl.useSystemProperties;
-    private List<HttpRequestNameValuePair> customHeaders = DescriptorImpl.customHeaders;
+	private @Nonnull
+	String releaseName;
+	private String releaseStartTimestamp;
+	private String releaseEndTimestamp;
 
 	@DataBoundConstructor
-	public ReleaseEvent(@Nonnull String url) {
-		this.url = url;
+	public ReleaseEvent(@Nonnull String releaseName) {
+		this.releaseName = releaseName;
 	}
 
 	@Nonnull
-	public String getUrl() {
-		return url;
+	public String getReleaseName() {
+		return releaseName;
 	}
 
-	public Boolean getIgnoreSslErrors() {
-		return ignoreSslErrors;
-	}
-
-	@DataBoundSetter
-	public void setIgnoreSslErrors(Boolean ignoreSslErrors) {
-		this.ignoreSslErrors = ignoreSslErrors;
-	}
-
-	public HttpMode getHttpMode() {
-		return httpMode;
+	public String getReleaseStartTimestamp() {
+		return releaseStartTimestamp;
 	}
 
 	@DataBoundSetter
-	public void setHttpMode(HttpMode httpMode) {
-		this.httpMode = httpMode;
+	public void setReleaseStartTimestamp(String releaseStartTimestamp) {
+		this.releaseStartTimestamp = releaseStartTimestamp;
 	}
 
-	public String getHttpProxy() {
-		return httpProxy;
-	}
-
-	@DataBoundSetter
-	public void setHttpProxy(String httpProxy) {
-		this.httpProxy = httpProxy;
-	}
-
-	public Boolean getPassBuildParameters() {
-		return passBuildParameters;
+	public String getReleaseEndTimestamp() {
+		return releaseEndTimestamp;
 	}
 
 	@DataBoundSetter
-	public void setPassBuildParameters(Boolean passBuildParameters) {
-		this.passBuildParameters = passBuildParameters;
-	}
-
-	@Nonnull
-	public String getValidResponseCodes() {
-		return validResponseCodes;
-	}
-
-	@DataBoundSetter
-	public void setValidResponseCodes(String validResponseCodes) {
-		this.validResponseCodes = validResponseCodes;
-	}
-
-	public String getValidResponseContent() {
-		return validResponseContent;
-	}
-
-	@DataBoundSetter
-	public void setValidResponseContent(String validResponseContent) {
-		this.validResponseContent = validResponseContent;
-	}
-
-	public MimeType getAcceptType() {
-		return acceptType;
-	}
-
-	@DataBoundSetter
-	public void setAcceptType(MimeType acceptType) {
-		this.acceptType = acceptType;
-	}
-
-	public MimeType getContentType() {
-		return contentType;
-	}
-
-	@DataBoundSetter
-	public void setContentType(MimeType contentType) {
-		this.contentType = contentType;
-	}
-
-	public String getOutputFile() {
-		return outputFile;
-	}
-
-	@DataBoundSetter
-	public void setOutputFile(String outputFile) {
-		this.outputFile = outputFile;
-	}
-
-	public Integer getTimeout() {
-		return timeout;
-	}
-
-	@DataBoundSetter
-	public void setTimeout(Integer timeout) {
-		this.timeout = timeout;
-	}
-
-	public Boolean getConsoleLogResponseBody() {
-		return consoleLogResponseBody;
-	}
-
-	@DataBoundSetter
-	public void setConsoleLogResponseBody(Boolean consoleLogResponseBody) {
-		this.consoleLogResponseBody = consoleLogResponseBody;
-	}
-
-	public Boolean getQuiet() {
-		return quiet;
-	}
-
-	@DataBoundSetter
-	public void setQuiet(Boolean quiet) {
-		this.quiet = quiet;
-	}
-
-	public String getAuthentication() {
-		return authentication;
-	}
-
-	@DataBoundSetter
-	public void setAuthentication(String authentication) {
-		this.authentication = authentication;
-	}
-
-	public String getRequestBody() {
-		return requestBody;
-	}
-
-	@DataBoundSetter
-	public void setRequestBody(String requestBody) {
-		this.requestBody = requestBody;
-	}
-
-	public Boolean getUseSystemProperties() {
-		return useSystemProperties;
-	}
-
-	@DataBoundSetter
-	public void setUseSystemProperties(Boolean useSystemProperties) {
-		this.useSystemProperties = useSystemProperties;
-	}
-
-	public List<HttpRequestNameValuePair> getCustomHeaders() {
-		return customHeaders;
-	}
-
-	@DataBoundSetter
-	public void setCustomHeaders(List<HttpRequestNameValuePair> customHeaders) {
-		this.customHeaders = customHeaders;
-	}
-
-	public String getUploadFile() {
-		return uploadFile;
-	}
-
-	@DataBoundSetter
-	public void setUploadFile(String uploadFile) {
-		this.uploadFile = uploadFile;
-	}
-
-	public String getMultipartName() {
-		return multipartName;
-	}
-
-	@DataBoundSetter
-	public void setMultipartName(String multipartName) {
-		this.multipartName = multipartName;
+	public void setReleaseEndTimestamp(String releaseEndTimestamp) {
+		this.releaseEndTimestamp = releaseEndTimestamp;
 	}
 
 	@Initializer(before = InitMilestone.PLUGINS_STARTED)
@@ -254,26 +72,6 @@ public class ReleaseEvent extends Builder {
 		Items.XSTREAM2.alias("pair", HttpRequestNameValuePair.class);
 	}
 
-	protected Object readResolve() {
-		if (customHeaders == null) {
-			customHeaders = DescriptorImpl.customHeaders;
-		}
-		if (validResponseCodes == null || validResponseCodes.trim().isEmpty()) {
-			validResponseCodes = DescriptorImpl.validResponseCodes;
-		}
-		if (ignoreSslErrors == null) {
-			//default for new job false(DescriptorImpl.ignoreSslErrors) for old ones true to keep same behavior
-			ignoreSslErrors = true;
-		}
-		if (quiet == null) {
-			quiet = DescriptorImpl.quiet;
-		}
-		if (useSystemProperties == null) {
-			// old jobs use it (for compatibility), new jobs doesn't (jelly was not reading the default)
-			useSystemProperties = !DescriptorImpl.useSystemProperties;
-		}
-		return this;
-	}
 
 	private List<HttpRequestNameValuePair> createParams(EnvVars envVars, AbstractBuild<?, ?> build, TaskListener listener) throws IOException {
 		Map<String, String> buildVariables = build.getBuildVariables();
@@ -293,228 +91,54 @@ public class ReleaseEvent extends Builder {
 		return l;
 	}
 
-	String resolveUrl(EnvVars envVars,
-					  AbstractBuild<?, ?> build, TaskListener listener) throws IOException {
-		String url = envVars.expand(getUrl());
-		if (Boolean.TRUE.equals(getPassBuildParameters()) && getHttpMode() == HttpMode.GET) {
-			List<HttpRequestNameValuePair> params = createParams(envVars, build, listener);
-			if (!params.isEmpty()) {
-				url = HttpClientUtil.appendParamsToUrl(url, params);
-			}
-		}
-		return url;
+	String resolveUrl() {
+		return InstanaPluginGlobalConfig.get().getInstanaUrl();
 	}
 
-	List<HttpRequestNameValuePair> resolveHeaders(EnvVars envVars) {
-		final List<HttpRequestNameValuePair> headers = new ArrayList<>();
-		if (contentType != null && contentType != MimeType.NOT_SET) {
-			headers.add(new HttpRequestNameValuePair("Content-type", contentType.getContentType().toString()));
-		}
-		if (acceptType != null && acceptType != MimeType.NOT_SET) {
-			headers.add(new HttpRequestNameValuePair("Accept", acceptType.getValue()));
-		}
-		headers.add(new HttpRequestNameValuePair("Authorization","apiToken " + InstanaPluginGlobalConfig.get().getToken(), true));
-		for (HttpRequestNameValuePair header : customHeaders) {
-			String headerName = envVars.expand(header.getName());
-			String headerValue = envVars.expand(header.getValue());
-			boolean maskValue = headerName.equalsIgnoreCase("Authorization") ||
-					header.getMaskValue();
+	HttpMode resolveHttpMode() {
+		return InstanaPluginGlobalConfig.get().getHttpMode();
+	}
 
-			headers.add(new HttpRequestNameValuePair(headerName, headerValue, maskValue));
-		}
+	String resolveProxy() {
+		return InstanaPluginGlobalConfig.get().getProxy();
+	}
+
+	List<HttpRequestNameValuePair> resolveHeaders() {
+		final List<HttpRequestNameValuePair> headers = new ArrayList<>();
+		headers.add(new HttpRequestNameValuePair("Content-type", "application/json"));
+		headers.add(new HttpRequestNameValuePair("Authorization", "apiToken " + InstanaPluginGlobalConfig.get().getToken(), true));
 		return headers;
 	}
 
-	String resolveBody(EnvVars envVars,
-					  AbstractBuild<?, ?> build, TaskListener listener) throws IOException {
-		String body = envVars.expand(getRequestBody());
-		if (Strings.isNullOrEmpty(body) && Boolean.TRUE.equals(getPassBuildParameters())) {
-			List<HttpRequestNameValuePair> params = createParams(envVars, build, listener);
-			if (!params.isEmpty()) {
-				body = HttpClientUtil.paramsToString(params);
-			}
-		}
-		return body;
-	}
-
-	FilePath resolveOutputFile(EnvVars envVars, AbstractBuild<?,?> build) {
-		if (outputFile == null || outputFile.trim().isEmpty()) {
-			return null;
-		}
-		String filePath = envVars.expand(outputFile);
-		FilePath workspace = build.getWorkspace();
-		if (workspace == null) {
-			throw new IllegalStateException("Could not find workspace to save file outputFile: " + outputFile);
-		}
-		return workspace.child(filePath);
-	}
-
-	FilePath resolveUploadFile(EnvVars envVars, AbstractBuild<?,?> build) {
-		if (uploadFile == null || uploadFile.trim().isEmpty()) {
-			return null;
-		}
-		String filePath = envVars.expand(uploadFile);
-		try {
-			FilePath workspace = build.getWorkspace();
-			if (workspace == null) {
-				throw new IllegalStateException("Could not find workspace to check existence of upload file: " + uploadFile +
-						". You should use it inside a 'node' block");
-			}
-			FilePath uploadFilePath = workspace.child(filePath);
-				if (!uploadFilePath.exists()) {
-					throw new IllegalStateException("Could not find upload file: " + uploadFile);
-				}
-			return uploadFilePath;
-		} catch (IOException | InterruptedException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-    @Override
-    public boolean perform(AbstractBuild<?,?> build, Launcher launcher, BuildListener listener)
-    throws InterruptedException, IOException
-    {
-		EnvVars envVars = build.getEnvironment(listener);
-		for (Map.Entry<String, String> e : build.getBuildVariables().entrySet()) {
-			envVars.put(e.getKey(), e.getValue());
-		}
-
-		HttpRequestExecution exec = HttpRequestExecution.from(this, envVars, build,
-				this.getQuiet() ? TaskListener.NULL : listener);
+	@Override
+	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
+			throws InterruptedException, IOException {
+		HttpRequestExecution exec = HttpRequestExecution.from(this, listener);
 		launcher.getChannel().call(exec);
 
-        return true;
-    }
+		return true;
+	}
 
 	@Extension
-    public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
-		public static final boolean ignoreSslErrors = false;
-		public static final HttpMode httpMode                  = HttpMode.GET;
-		public static final String   httpProxy                 = "";
-        public static final Boolean  passBuildParameters       = false;
-        public static final String   validResponseCodes        = "100:399";
-        public static final String   validResponseContent      = "";
-        public static final MimeType acceptType                = MimeType.NOT_SET;
-        public static final MimeType contentType               = MimeType.NOT_SET;
-        public static final String   outputFile                = "";
-        public static final int      timeout                   = 0;
-        public static final Boolean  consoleLogResponseBody    = false;
-        public static final Boolean  quiet                     = false;
-        public static final String   authentication            = "";
-        public static final String   requestBody               = "";
-        public static final String   uploadFile                = "";
-        public static final String   multipartName             = "";
-        public static final Boolean  useSystemProperties       = false;
-        public static final List <HttpRequestNameValuePair> customHeaders = Collections.<HttpRequestNameValuePair>emptyList();
+	public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
+		public static final String releaseName = "";
+		public static final String releaseStartTimestamp = "";
+		public static final String releaseEndTimestamp = "";
 
-        public DescriptorImpl() {
-            load();
-        }
+		public DescriptorImpl() {
+			load();
+		}
 
-        @SuppressWarnings("rawtypes")
-        @Override
-        public boolean isApplicable(Class<? extends AbstractProject> aClass) {
-            return true;
-        }
+		@SuppressWarnings("rawtypes")
+		@Override
+		public boolean isApplicable(Class<? extends AbstractProject> aClass) {
+			return true;
+		}
 
-        @Override
-        public String getDisplayName() {
-            return "Instana release event";
-        }
-
-        public ListBoxModel doFillHttpModeItems() {
-            return HttpMode.getFillItems();
-        }
-
-        public ListBoxModel doFillAcceptTypeItems() {
-            return MimeType.getContentTypeFillItems();
-        }
-
-        public ListBoxModel doFillContentTypeItems() {
-            return MimeType.getContentTypeFillItems();
-        }
-
-        public ListBoxModel doFillAuthenticationItems(@AncestorInPath Item project,
-													  @QueryParameter String url) {
-            return fillAuthenticationItems(project, url);
-        }
-
-        public static ListBoxModel fillAuthenticationItems(Item project, String url) {
-			if (project == null || !project.hasPermission(Item.CONFIGURE)) {
-				return new StandardListBoxModel();
-			}
-
-			List<Option> options = new ArrayList<>();
-			for (BasicDigestAuthentication basic : InstanaPluginGlobalConfig.get().getBasicDigestAuthentications()) {
-				options.add(new Option("(deprecated - use Jenkins Credentials) " +
-						basic.getKeyName(), basic.getKeyName()));
-            }
-
-            for (FormAuthentication formAuthentication : InstanaPluginGlobalConfig.get().getFormAuthentications()) {
-				options.add(new Option(formAuthentication.getKeyName()));
-			}
-
-			AbstractIdCredentialsListBoxModel<StandardListBoxModel, StandardCredentials> items = new StandardListBoxModel()
-					.includeEmptyValue()
-					.includeAs(ACL.SYSTEM,
-							project, StandardUsernamePasswordCredentials.class,
-							URIRequirementBuilder.fromUri(url).build());
-			items.addMissing(options);
-            return items;
-        }
-
-        public static List<Range<Integer>> parseToRange(String value) {
-            List<Range<Integer>> validRanges = new ArrayList<Range<Integer>>();
-
-            if (Strings.isNullOrEmpty(value)) {
-                value = ReleaseEvent.DescriptorImpl.validResponseCodes;
-            }
-
-            String[] codes = value.split(",");
-            for (String code : codes) {
-                String[] fromTo = code.trim().split(":");
-                checkArgument(fromTo.length <= 2, "Code %s should be an interval from:to or a single value", code);
-
-                Integer from;
-                try {
-                    from = Integer.parseInt(fromTo[0]);
-                } catch (NumberFormatException nfe) {
-                    throw new IllegalArgumentException("Invalid number "+fromTo[0]);
-                }
-
-                Integer to = from;
-                if (fromTo.length != 1) {
-                    try {
-                        to = Integer.parseInt(fromTo[1]);
-                    } catch (NumberFormatException nfe) {
-                        throw new IllegalArgumentException("Invalid number "+fromTo[1]);
-                    }
-                }
-
-                checkArgument(from <= to, "Interval %s should be FROM less than TO", code);
-                validRanges.add(Ranges.closed(from, to));
-            }
-
-            return validRanges;
-        }
-
-        public FormValidation doCheckValidResponseCodes(@QueryParameter String value) {
-            return checkValidResponseCodes(value);
-        }
-
-        public static FormValidation checkValidResponseCodes(String value) {
-            if (value == null || value.trim().isEmpty()) {
-                return FormValidation.ok();
-            }
-
-            try {
-                parseToRange(value);
-            } catch (IllegalArgumentException iae) {
-                return FormValidation.error("Response codes expected is wrong. "+iae.getMessage());
-            }
-            return FormValidation.ok();
-
-        }
-    }
+		@Override
+		public String getDisplayName() {
+			return "Instana release event";
+		}
+	}
 
 }

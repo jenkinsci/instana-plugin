@@ -15,6 +15,7 @@ import hudson.XmlFile;
 import hudson.init.InitMilestone;
 import hudson.init.Initializer;
 import hudson.util.FormValidation;
+import hudson.util.ListBoxModel;
 import hudson.util.XStream2;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
@@ -32,7 +33,9 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 
 	private @Nonnull String instanaUrl;
 	private @Nonnull String token;
-    private List<BasicDigestAuthentication> basicDigestAuthentications = new ArrayList<BasicDigestAuthentication>();
+	private @Nonnull String proxy;
+	private @Nonnull HttpMode httpMode = HttpMode.POST;
+	private List<BasicDigestAuthentication> basicDigestAuthentications = new ArrayList<BasicDigestAuthentication>();
     private List<FormAuthentication> formAuthentications = new ArrayList<FormAuthentication>();
 
     private static final XStream2 XSTREAM2 = new XStream2();
@@ -104,23 +107,43 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
         this.formAuthentications = formAuthentications;
     }
 
-    public String getInstanaUrl(){
-    	return instanaUrl;
+	@Nonnull
+	public String getInstanaUrl() {
+		return instanaUrl;
 	}
 
-	public void setInstanaUrl(String instanaUrl){
-		this.instanaUrl= instanaUrl;
+	public void setInstanaUrl(@Nonnull String instanaUrl) {
+		this.instanaUrl = instanaUrl;
 	}
 
-	public String getToken(){
-    	return token;
+	@Nonnull
+	public String getToken() {
+		return token;
 	}
 
-	public void setToken(String token){
-    	this.token=token;
+	public void setToken(@Nonnull String token) {
+		this.token = token;
 	}
 
-    public List<Authenticator> getAuthentications() {
+	@Nonnull
+	public HttpMode getHttpMode() {
+		return httpMode;
+	}
+
+	public void setHttpMode(@Nonnull HttpMode httpMode) {
+		this.httpMode = httpMode;
+	}
+
+	@Nonnull
+	public String getProxy() {
+		return proxy;
+	}
+
+	public void setProxy(@Nonnull String proxy) {
+		this.proxy = proxy;
+	}
+
+	public List<Authenticator> getAuthentications() {
         List<Authenticator> list = new ArrayList<Authenticator>();
         list.addAll(basicDigestAuthentications);
         list.addAll(formAuthentications);
@@ -135,4 +158,8 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
         }
         return null;
     }
+
+	public ListBoxModel doFillHttpModeItems() {
+		return HttpMode.getFillItems();
+	}
 }

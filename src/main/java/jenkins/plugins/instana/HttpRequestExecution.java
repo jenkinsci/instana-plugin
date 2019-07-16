@@ -1,69 +1,30 @@
 package jenkins.plugins.instana;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
-import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.List;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509ExtendedTrustManager;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
-import com.cloudbees.plugins.credentials.CredentialsMatchers;
-import com.cloudbees.plugins.credentials.CredentialsProvider;
-import com.cloudbees.plugins.credentials.common.StandardUsernamePasswordCredentials;
-import com.cloudbees.plugins.credentials.domains.URIRequirementBuilder;
-import com.google.common.collect.Range;
-import com.google.common.io.ByteStreams;
-
-import hudson.AbortException;
 import hudson.CloseProofOutputStream;
-import hudson.EnvVars;
-import hudson.FilePath;
-import hudson.model.AbstractBuild;
-import hudson.model.Item;
 import hudson.model.TaskListener;
 import hudson.remoting.RemoteOutputStream;
-import hudson.security.ACL;
 import jenkins.security.MasterToSlaveCallable;
 
-import jenkins.plugins.instana.ReleaseEvent.DescriptorImpl;
-import jenkins.plugins.instana.ReleaseEventStep.Execution;
-import jenkins.plugins.instana.auth.Authenticator;
-import jenkins.plugins.instana.auth.CredentialBasicAuthentication;
 import jenkins.plugins.instana.util.HttpClientUtil;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 import jenkins.plugins.instana.util.RequestAction;
@@ -76,126 +37,43 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 	private static final long serialVersionUID = -2066857816168989599L;
 	private final String url;
 	private final HttpMode httpMode;
-	private final boolean ignoreSslErrors;
 	private final HttpHost httpProxy;
 
 	private final String body;
 	private final List<HttpRequestNameValuePair> headers;
 
-	private final FilePath uploadFile;
-	private final String multipartName;
-
-	private final boolean useSystemProperties;
-	private final String validResponseCodes;
-	private final String validResponseContent;
-	private final FilePath outputFile;
-	private final int timeout;
-	private final boolean consoleLogResponseBody;
-	private final ResponseHandle responseHandle;
-
-	private final Authenticator authenticator;
-
 	private final OutputStream remoteLogger;
 	private transient PrintStream localLogger;
 
-	static HttpRequestExecution from(ReleaseEvent http,
-									 EnvVars envVars, AbstractBuild<?, ?> build, TaskListener taskListener) {
-		try {
-			String url = http.resolveUrl(envVars, build, taskListener);
-			String body = http.resolveBody(envVars, build, taskListener);
-			List<HttpRequestNameValuePair> headers = http.resolveHeaders(envVars);
+	static HttpRequestExecution from(ReleaseEvent http, TaskListener taskListener) {
+		String url = http.resolveUrl();
+		String body = http.getReleaseName() + " | " + http.getReleaseStartTimestamp() + " | " + http.getReleaseEndTimestamp();
+		List<HttpRequestNameValuePair> headers = http.resolveHeaders();
 
-			FilePath outputFile = http.resolveOutputFile(envVars, build);
-			FilePath uploadFile = http.resolveUploadFile(envVars, build);
-			Item project = build.getProject();
-
-			return new HttpRequestExecution(
-					url, http.getHttpMode(), http.getIgnoreSslErrors(),
-					http.getHttpProxy(), body, headers, http.getTimeout(),
-					uploadFile, http.getMultipartName(),
-          http.getAuthentication(), http.getUseSystemProperties(),
-
-					http.getValidResponseCodes(), http.getValidResponseContent(),
-					http.getConsoleLogResponseBody(), outputFile,
-					ResponseHandle.NONE,
-
-					project,
-					taskListener.getLogger());
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+		return new HttpRequestExecution(url, http.resolveHttpMode(), http.resolveProxy(), body,
+				headers, taskListener.getLogger());
 	}
 
-	static HttpRequestExecution from(ReleaseEventStep step, TaskListener taskListener, Execution execution) {
+	static HttpRequestExecution from(ReleaseEventStep step, TaskListener taskListener) {
+		String url = step.resolveUrl();
+		String body = step.getReleaseName() + " | " + step.getReleaseStartTimestamp() + " | " + step.getReleaseEndTimestamp();
 		List<HttpRequestNameValuePair> headers = step.resolveHeaders();
-		FilePath outputFile = execution.resolveOutputFile();
-		FilePath uploadFile = execution.resolveUploadFile();
-		Item project = execution.getProject();
-		return new HttpRequestExecution(
-				step.getUrl(), step.getHttpMode(), step.isIgnoreSslErrors(),
-				step.getHttpProxy(), step.getRequestBody(), headers, step.getTimeout(),
-				uploadFile, step.getMultipartName(),
-				step.getAuthentication(), step.getUseSystemProperties(),
 
-				step.getValidResponseCodes(), step.getValidResponseContent(),
-				step.getConsoleLogResponseBody(), outputFile,
-				step.getResponseHandle(),
-				project, taskListener.getLogger());
+		return new HttpRequestExecution(url, step.resolveHttpMode(), step.resolveProxy(), body,
+				headers, taskListener.getLogger());
 	}
 
 	private HttpRequestExecution(
-			String url, HttpMode httpMode, boolean ignoreSslErrors,
-			String httpProxy, String body, List<HttpRequestNameValuePair> headers, Integer timeout,
-			FilePath uploadFile, String multipartName,
-			String authentication, boolean useSystemProperties,
-
-			String validResponseCodes, String validResponseContent,
-			Boolean consoleLogResponseBody, FilePath outputFile,
-			ResponseHandle responseHandle,
-
-			Item project, PrintStream logger
+			String url, HttpMode httpMode,
+			String httpProxy, String body, List<HttpRequestNameValuePair> headers,
+			PrintStream logger
 	) {
 		this.url = url;
 		this.httpMode = httpMode;
-		this.ignoreSslErrors = ignoreSslErrors;
 		this.httpProxy = StringUtils.isNotBlank(httpProxy) ? HttpHost.create(httpProxy) : null;
 
 		this.body = body;
 		this.headers = headers;
-		this.timeout = timeout != null ? timeout : -1;
-		if (authentication != null && !authentication.isEmpty()) {
-			Authenticator auth = InstanaPluginGlobalConfig.get().getAuthentication(authentication);
-
-			if (auth == null) {
-				StandardUsernamePasswordCredentials credential = CredentialsMatchers.firstOrNull(
-						CredentialsProvider.lookupCredentials(
-								StandardUsernamePasswordCredentials.class,
-								project, ACL.SYSTEM,
-								URIRequirementBuilder.fromUri(url).build()),
-						CredentialsMatchers.withId(authentication));
-				if (credential != null) {
-					auth = new CredentialBasicAuthentication(credential);
-				}
-			}
-
-
-			if (auth == null) {
-				throw new IllegalStateException("Authentication '" + authentication + "' doesn't exist anymore");
-			}
-			authenticator = auth;
-		} else {
-			authenticator = null;
-		}
-
-		this.uploadFile = uploadFile;
-		this.multipartName = multipartName;
-		this.useSystemProperties = useSystemProperties;
-		this.validResponseCodes = validResponseCodes;
-		this.validResponseContent = validResponseContent != null ? validResponseContent : "";
-		this.consoleLogResponseBody = Boolean.TRUE.equals(consoleLogResponseBody);
-		this.responseHandle = this.consoleLogResponseBody || !this.validResponseContent.isEmpty() ?
-				ResponseHandle.STRING : responseHandle;
-		this.outputFile = outputFile;
 
 		this.localLogger = logger;
 		this.remoteLogger = new RemoteOutputStream(new CloseProofOutputStream(logger));
@@ -203,17 +81,16 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 
 	@Override
 	public ResponseContentSupplier call() throws RuntimeException {
-		logger().println("HttpMethod: " + httpMode);
-		logger().println("URL: " + url);
+		logger().println(body);
+
 		for (HttpRequestNameValuePair header : headers) {
 			logger().print(header.getName() + ": ");
 			logger().println(header.getMaskValue() ? "*****" : header.getValue());
 		}
 
 		try {
-			return authAndRequest();
-		} catch (IOException | InterruptedException |
-				KeyStoreException | NoSuchAlgorithmException | KeyManagementException e) {
+			return releaseEventRequest(); //authAndRequest();
+		} catch (IOException | InterruptedException e) {
 			throw new IllegalStateException(e);
 		}
 	}
@@ -229,97 +106,32 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		return localLogger;
 	}
 
-	private ResponseContentSupplier authAndRequest()
-			throws IOException, InterruptedException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-		//only leave open if no error happen
-		ResponseHandle responseHandle = ResponseHandle.NONE;
+	private ResponseContentSupplier releaseEventRequest() throws IOException, InterruptedException {
 		CloseableHttpClient httpclient = null;
 		try {
 			HttpClientBuilder clientBuilder = HttpClientBuilder.create();
 
-			if (useSystemProperties) {
-				clientBuilder.useSystemProperties();
-			}
-
-			configureTimeoutAndSsl(clientBuilder);
 			if (this.httpProxy != null) {
 				clientBuilder.setProxy(this.httpProxy);
 			}
 
 			HttpClientUtil clientUtil = new HttpClientUtil();
-			HttpRequestBase httpRequestBase = clientUtil.createRequestBase(new RequestAction(new URL(url), httpMode, body, null, headers));
-
-			// set multipart/form-data entity for file upload
-			if (uploadFile != null && httpMode == HttpMode.POST) {
-				MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-				builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-
-				ContentType contentType = ContentType.APPLICATION_OCTET_STREAM;
-				for (HttpRequestNameValuePair header: headers) {
-					if ("Content-type".equalsIgnoreCase(header.getName())) {
-						contentType = ContentType.parse(header.getValue());
-						break;
-					}
-				}
-
-				FileBody fileBody = new FileBody(new File(uploadFile.getRemote()), contentType);
-				builder.addPart(multipartName, fileBody);
-				HttpEntity multiPartEntity = builder.build();
-
-				((HttpEntityEnclosingRequestBase) httpRequestBase).setEntity(multiPartEntity);
-				httpRequestBase.setHeader(multiPartEntity.getContentType());
-				httpRequestBase.setHeader(multiPartEntity.getContentEncoding());
-			}
+			HttpRequestBase httpRequestBase = clientUtil.createRequestBase(
+					new RequestAction(new URL(this.url), this.httpMode,
+							null,
+							null,
+							this.headers));
 
 			HttpContext context = new BasicHttpContext();
-			httpclient = auth(clientBuilder, httpRequestBase, context);
+			httpclient = clientBuilder.build();
 
-			ResponseContentSupplier response = executeRequest(httpclient, clientUtil, httpRequestBase, context);
-			processResponse(response);
-
-			responseHandle = this.responseHandle;
-			if (responseHandle == ResponseHandle.LEAVE_OPEN) {
-				response.setHttpClient(httpclient);
-			}
-			return response;
+			return executeRequest(httpclient, clientUtil, httpRequestBase, context);
+			//processResponse(response);
 		} finally {
-			if (responseHandle != ResponseHandle.LEAVE_OPEN) {
-				if (httpclient != null) {
-					httpclient.close();
-				}
+			if (httpclient != null) {
+				httpclient.close();
 			}
 		}
-	}
-
-	private void configureTimeoutAndSsl(HttpClientBuilder clientBuilder) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
-		//timeout
-		if (timeout > 0) {
-			int t = timeout * 1000;
-			RequestConfig config = RequestConfig.custom()
-					.setSocketTimeout(t)
-					.setConnectTimeout(t)
-					.setConnectionRequestTimeout(t)
-					.build();
-			clientBuilder.setDefaultRequestConfig(config);
-		}
-		//Ignore SSL errors
-		if (ignoreSslErrors) {
-			SSLContext sc = SSLContext.getInstance("SSL");
-			sc.init(null, new TrustManager[]{new NoopTrustManager()}, new java.security.SecureRandom());
-			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sc, NoopHostnameVerifier.INSTANCE);
-			clientBuilder.setSSLSocketFactory(sslsf);
-		}
-	}
-
-	private CloseableHttpClient auth(
-			HttpClientBuilder clientBuilder, HttpRequestBase httpRequestBase,
-			HttpContext context) throws IOException, InterruptedException {
-		if (authenticator == null) {
-			return clientBuilder.build();
-		}
-
-		logger().println("Using authentication: " + authenticator.getKeyName());
-		return authenticator.authenticate(clientBuilder, context, httpRequestBase, logger());
 	}
 
 	private ResponseContentSupplier executeRequest(
@@ -329,7 +141,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		try {
 			final HttpResponse response = clientUtil.execute(httpclient, context, httpRequestBase, logger());
 			// The HttpEntity is consumed by the ResponseContentSupplier
-			responseContentSupplier = new ResponseContentSupplier(responseHandle, response);
+			responseContentSupplier = new ResponseContentSupplier(ResponseHandle.NONE, response);
 		} catch (UnknownHostException uhe) {
 			logger().println("Treating UnknownHostException(" + uhe.getMessage() + ") as 404 Not Found");
 			responseContentSupplier = new ResponseContentSupplier("UnknownHostException as 404 Not Found", 404);
@@ -341,91 +153,4 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		return responseContentSupplier;
 	}
 
-	private void responseCodeIsValid(ResponseContentSupplier response) throws AbortException {
-		List<Range<Integer>> ranges = DescriptorImpl.parseToRange(validResponseCodes);
-		for (Range<Integer> range : ranges) {
-			if (range.contains(response.getStatus())) {
-				logger().println("Success code from " + range);
-				return;
-			}
-		}
-		throw new AbortException("Fail: the returned code " + response.getStatus() + " is not in the accepted range: " + ranges);
-	}
-
-	private void processResponse(ResponseContentSupplier response) throws IOException, InterruptedException {
-		//logs
-		if (consoleLogResponseBody) {
-			logger().println("Response: \n" + response.getContent());
-		}
-
-		//validate status code
-		responseCodeIsValid(response);
-
-		//validate content
-		if (!validResponseContent.isEmpty()) {
-			if (!response.getContent().contains(validResponseContent)) {
-				throw new AbortException("Fail: Response doesn't contain expected content '" + validResponseContent + "'");
-			}
-		}
-
-		//save file
-		if (outputFile == null) {
-			return;
-		}
-		logger().println("Saving response body to " + outputFile);
-
-		InputStream in = response.getContentStream();
-		if (in == null) {
-			return;
-		}
-		OutputStream out = null;
-		try {
-			out = outputFile.write();
-			ByteStreams.copy(in, out);
-		} finally {
-			if (out != null) {
-				out.close();
-			}
-			in.close();
-		}
-	}
-
-	private static class NoopTrustManager extends X509ExtendedTrustManager {
-
-		@Override
-		public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-				throws CertificateException {
-		}
-
-		@Override
-		public void checkServerTrusted(X509Certificate[] chain, String authType)
-				throws CertificateException {
-
-		}
-
-		@Override
-		public X509Certificate[] getAcceptedIssuers() {
-			return null;
-		}
-
-		@Override
-		public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket)
-				throws CertificateException {
-		}
-
-		@Override
-		public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
-				throws CertificateException {
-		}
-
-		@Override
-		public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket)
-				throws CertificateException {
-		}
-
-		@Override
-		public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
-				throws CertificateException {
-		}
-	}
 }
