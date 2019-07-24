@@ -40,6 +40,7 @@ public class ReleaseEventTestBase {
 
 	private static ServerRunning SERVER;
 	static final String ALL_IS_WELL = "All is well";
+	static final String TEST_API_TOKEN ="testApiToken";
 	@Rule
 	public JenkinsRule j = new JenkinsRule();
 	private Map<Domain, List<Credentials>> credentials;
@@ -83,6 +84,8 @@ public class ReleaseEventTestBase {
 	public void init() {
 		credentials = new HashMap<>();
 		credentials.put(Domain.global(), new ArrayList<Credentials>());
+		InstanaPluginGlobalConfig.get().setInstanaUrl(baseURL()+"/api/releases");
+		InstanaPluginGlobalConfig.get().setToken(TEST_API_TOKEN);
 	}
 
 	@After

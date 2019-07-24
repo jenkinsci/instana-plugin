@@ -1,5 +1,7 @@
 package jenkins.plugins.instana;
 
+import net.sf.json.JSONObject;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -20,6 +22,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
+import hudson.AbortException;
 import hudson.CloseProofOutputStream;
 import hudson.model.TaskListener;
 import hudson.remoting.RemoteOutputStream;
@@ -56,7 +59,11 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 
 	static HttpRequestExecution from(ReleaseEventStep step, TaskListener taskListener) {
 		String url = step.resolveUrl();
-		String body = step.getReleaseName() + " | " + step.getReleaseStartTimestamp() + " | " + step.getReleaseEndTimestamp();
+
+		JSONObject jsonObject =  new JSONObject();
+		jsonObject.put("name", (Object) step.getReleaseName());
+		jsonObject.put("start", (Object) step.getReleaseStartTimestamp());
+		String body = jsonObject.toString();
 		List<HttpRequestNameValuePair> headers = step.resolveHeaders();
 
 		return new HttpRequestExecution(url, step.resolveHttpMode(), step.resolveProxy(), body,
@@ -114,23 +121,30 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 			if (this.httpProxy != null) {
 				clientBuilder.setProxy(this.httpProxy);
 			}
-
 			HttpClientUtil clientUtil = new HttpClientUtil();
 			HttpRequestBase httpRequestBase = clientUtil.createRequestBase(
 					new RequestAction(new URL(this.url), this.httpMode,
-							null,
+							this.body,
 							null,
 							this.headers));
 
 			HttpContext context = new BasicHttpContext();
 			httpclient = clientBuilder.build();
 
-			return executeRequest(httpclient, clientUtil, httpRequestBase, context);
-			//processResponse(response);
+			final ResponseContentSupplier response = executeRequest(httpclient, clientUtil, httpRequestBase, context);
+			validate(response);
+			return response;
 		} finally {
 			if (httpclient != null) {
 				httpclient.close();
 			}
+		}
+	}
+
+	private void validate(ResponseContentSupplier response) throws AbortException{
+		if(response.getStatus() != 200){
+			logger().println(response.getContent());
+			throw new AbortException("Fail: the returned code " + response.getStatus() + " is not: 200");
 		}
 	}
 
@@ -141,7 +155,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		try {
 			final HttpResponse response = clientUtil.execute(httpclient, context, httpRequestBase, logger());
 			// The HttpEntity is consumed by the ResponseContentSupplier
-			responseContentSupplier = new ResponseContentSupplier(ResponseHandle.NONE, response);
+			responseContentSupplier = new ResponseContentSupplier(ResponseHandle.STRING, response);
 		} catch (UnknownHostException uhe) {
 			logger().println("Treating UnknownHostException(" + uhe.getMessage() + ") as 404 Not Found");
 			responseContentSupplier = new ResponseContentSupplier("UnknownHostException as 404 Not Found", 404);
@@ -152,5 +166,4 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 
 		return responseContentSupplier;
 	}
-
 }
