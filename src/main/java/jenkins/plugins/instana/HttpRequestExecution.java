@@ -160,7 +160,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		try {
 			final HttpResponse response = clientUtil.execute(httpclient, context, httpRequestBase, logger());
 			// The HttpEntity is consumed by the ResponseContentSupplier
-			responseContentSupplier = new ResponseContentSupplier(ResponseHandle.STRING, response);
+			responseContentSupplier = new ResponseContentSupplier(response);
 		} catch (UnknownHostException uhe) {
 			logger().println("Treating UnknownHostException(" + uhe.getMessage() + ") as 404 Not Found");
 			responseContentSupplier = new ResponseContentSupplier("UnknownHostException as 404 Not Found", 404);

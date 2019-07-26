@@ -26,8 +26,7 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
  */
 public final class ReleaseEventStep extends AbstractStepImpl {
 
-	private @Nonnull
-	String releaseName;
+	private @Nonnull String releaseName;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 

@@ -33,8 +33,7 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 public class ReleaseEvent extends Builder {
 
 
-	private @Nonnull
-	String releaseName;
+	private @Nonnull String releaseName;
 	private String releaseStartTimestamp;
 	private String releaseEndTimestamp;
 
@@ -74,24 +73,6 @@ public class ReleaseEvent extends Builder {
 	}
 
 
-	private List<HttpRequestNameValuePair> createParams(EnvVars envVars, AbstractBuild<?, ?> build, TaskListener listener) throws IOException {
-		Map<String, String> buildVariables = build.getBuildVariables();
-		if (buildVariables.isEmpty()) {
-			return Collections.emptyList();
-		}
-		PrintStream logger = listener.getLogger();
-		logger.println("Parameters: ");
-
-		List<HttpRequestNameValuePair> l = new ArrayList<>();
-		for (Map.Entry<String, String> entry : buildVariables.entrySet()) {
-			String value = envVars.expand(entry.getValue());
-			logger.println("  " + entry.getKey() + " = " + value);
-
-			l.add(new HttpRequestNameValuePair(entry.getKey(), value));
-		}
-		return l;
-	}
-
 	String resolveUrl() {
 		return InstanaPluginGlobalConfig.get().getInstanaUrl() + InstanaPluginGlobalConfig.RELEASES_API;
 	}
@@ -123,8 +104,8 @@ public class ReleaseEvent extends Builder {
 	@Extension
 	public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
 		public static final String releaseName = "";
-		public static final String releaseStartTimestamp = "";
-		public static final String releaseEndTimestamp = "";
+		public static final String releaseStartTimestamp = null;
+		public static final String releaseEndTimestamp = null;
 
 		public DescriptorImpl() {
 			load();

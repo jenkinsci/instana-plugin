@@ -37,7 +37,6 @@ public class ResponseContentSupplier implements Serializable, AutoCloseable {
 	private Map<String, List<String>> headers = new HashMap<>();
 	private String charset;
 
-	private ResponseHandle responseHandle;
 	private String content;
 	@SuppressFBWarnings("SE_TRANSIENT_FIELD_NOT_RESTORED")
 	private transient InputStream contentStream;
@@ -49,9 +48,8 @@ public class ResponseContentSupplier implements Serializable, AutoCloseable {
 		this.status = status;
 	}
 
-	public ResponseContentSupplier(ResponseHandle responseHandle, HttpResponse response) {
+	public ResponseContentSupplier(HttpResponse response) {
 		this.status = response.getStatusLine().getStatusCode();
-		this.responseHandle = responseHandle;
 		readHeaders(response);
 		readCharset(response);
 
@@ -59,7 +57,7 @@ public class ResponseContentSupplier implements Serializable, AutoCloseable {
 			HttpEntity entity = response.getEntity();
 			InputStream entityContent = entity != null ? entity.getContent() : null;
 
-			if (responseHandle == ResponseHandle.STRING && entityContent != null) {
+			if (entityContent != null) {
 				byte[] bytes = ByteStreams.toByteArray(entityContent);
 				contentStream = new ByteArrayInputStream(bytes);
 				content = new String(bytes, Strings.isNullOrEmpty(charset) ?
@@ -89,25 +87,7 @@ public class ResponseContentSupplier implements Serializable, AutoCloseable {
 
 	@Whitelisted
 	public String getContent() {
-		if (responseHandle == ResponseHandle.STRING) {
-			return content;
-		}
-		if (content != null) {
-			return content;
-		}
-		if(contentStream == null) {
-			return null;
-		}
-
-		try (InputStreamReader in = new InputStreamReader(contentStream,
-				Strings.isNullOrEmpty(charset) ? Charset.defaultCharset().name() : charset)) {
-			content = CharStreams.toString(in);
-			return content;
-		} catch (IOException e) {
-			throw new IllegalStateException("Error reading response. " +
-					"If you are reading the content in pipeline you should pass responseHandle: 'LEAVE_OPEN' and " +
-					"close the response(response.close()) after consume it.", e);
-		}
+		return content;
 	}
 
 	@Whitelisted

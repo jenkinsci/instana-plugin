@@ -61,29 +61,4 @@ public class RequestAction extends AbstractDescribableImpl<RequestAction> implem
         return requestBody;
     }
 
-    @Extension
-    public static class ActionFormAuthenticationDescriptor extends Descriptor<RequestAction> {
-
-        @Override
-        public String getDisplayName() {
-            return "Action Form Authentication";
-        }
-
-        public FormValidation doCheckUrl(@QueryParameter String value) {
-            return HttpRequestValidation.checkUrl(value);
-        }
-
-        public FormValidation doCheckTimeout(@QueryParameter String timeout) {
-            try {
-                Integer.parseInt(timeout);
-                return FormValidation.ok();
-            } catch (NumberFormatException e) {
-                return FormValidation.error("Not a number");
-            }
-        }
-
-        public ListBoxModel doFillModeItems() {
-            return HttpMode.getFillItems();
-        }
-    }
 }
