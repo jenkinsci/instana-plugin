@@ -50,7 +50,12 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 
 	static HttpRequestExecution from(ReleaseEvent http, TaskListener taskListener) {
 		String url = http.resolveUrl();
-		String body = http.getReleaseName() + " | " + http.getReleaseStartTimestamp() + " | " + http.getReleaseEndTimestamp();
+
+		JSONObject jsonObject =  new JSONObject();
+		jsonObject.put("name", http.getReleaseName());
+		jsonObject.put("start", http.getReleaseStartTimestamp());
+		String body = jsonObject.toString();
+
 		List<HttpRequestNameValuePair> headers = http.resolveHeaders();
 
 		return new HttpRequestExecution(url, http.resolveHttpMode(), http.resolveProxy(), body,
@@ -61,8 +66,8 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		String url = step.resolveUrl();
 
 		JSONObject jsonObject =  new JSONObject();
-		jsonObject.put("name", (Object) step.getReleaseName());
-		jsonObject.put("start", (Object) step.getReleaseStartTimestamp());
+		jsonObject.put("name", step.getReleaseName());
+		jsonObject.put("start", step.getReleaseStartTimestamp());
 		String body = jsonObject.toString();
 		List<HttpRequestNameValuePair> headers = step.resolveHeaders();
 

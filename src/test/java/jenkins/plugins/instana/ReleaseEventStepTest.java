@@ -2,6 +2,7 @@ package jenkins.plugins.instana;
 
 import static jenkins.plugins.instana.Registers.registerReleaseEndpointChecker;
 import static jenkins.plugins.instana.Registers.registerFailedAuthEndpoint;
+import static jenkins.plugins.instana.Registers.registerTimeout;
 
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
@@ -10,6 +11,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import hudson.model.FreeStyleBuild;
+import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 
 /**
@@ -59,5 +62,25 @@ public class ReleaseEventStepTest extends ReleaseEventTestBase {
 		// Check expectations
 		j.assertBuildStatus(Result.FAILURE,run);
 		j.assertLogContains("Unauthorized request", run);
+	}
+
+	@Test
+	public void timeoutFailsTheBuild() throws Exception {
+		// Prepare the server
+		registerTimeout();
+
+
+		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
+		proj.setDefinition(new CpsFlowDefinition(
+				"def response = releaseEvent releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689' \n" +
+						"println('Status: '+response.status)\n" +
+						"println('Response: '+response.content)\n",
+				true));
+
+		// Execute the build
+		WorkflowRun run = proj.scheduleBuild2(0).get();
+
+		// Check expectations
+		this.j.assertBuildStatus(Result.FAILURE, run);
 	}
 }
