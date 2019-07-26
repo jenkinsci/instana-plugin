@@ -84,7 +84,7 @@ public class ReleaseEventTestBase {
 	public void init() {
 		credentials = new HashMap<>();
 		credentials.put(Domain.global(), new ArrayList<Credentials>());
-		InstanaPluginGlobalConfig.get().setInstanaUrl(baseURL()+"/api/releases");
+		InstanaPluginGlobalConfig.get().setInstanaUrl(baseURL());
 		InstanaPluginGlobalConfig.get().setToken(TEST_API_TOKEN);
 	}
 

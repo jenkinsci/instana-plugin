@@ -15,14 +15,10 @@ import hudson.XmlFile;
 import hudson.init.InitMilestone;
 import hudson.init.Initializer;
 import hudson.util.FormValidation;
-import hudson.util.ListBoxModel;
 import hudson.util.XStream2;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
 
-import jenkins.plugins.instana.auth.Authenticator;
-import jenkins.plugins.instana.auth.BasicDigestAuthentication;
-import jenkins.plugins.instana.auth.FormAuthentication;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 /**
@@ -35,8 +31,8 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 	private @Nonnull String token;
 	private @Nonnull String proxy;
 	private @Nonnull HttpMode httpMode = HttpMode.POST;
-	private List<BasicDigestAuthentication> basicDigestAuthentications = new ArrayList<BasicDigestAuthentication>();
-    private List<FormAuthentication> formAuthentications = new ArrayList<FormAuthentication>();
+
+	public static final String RELEASES_API = "/api/releases";
 
     private static final XStream2 XSTREAM2 = new XStream2();
 
@@ -69,15 +65,7 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
     }
 
 	public static FormValidation validateKeyName(String value) {
-		List<Authenticator> list = InstanaPluginGlobalConfig.get().getAuthentications();
-
 		int count = 0;
-		for (Authenticator basicAuthentication : list) {
-			if (basicAuthentication.getKeyName().equals(value)) {
-				count++;
-			}
-		}
-
 		if (count > 1) {
 			return FormValidation.error("The Key Name must be unique");
 		}
@@ -87,24 +75,6 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 
     public static InstanaPluginGlobalConfig get() {
         return GlobalConfiguration.all().get(InstanaPluginGlobalConfig.class);
-    }
-
-    public List<BasicDigestAuthentication> getBasicDigestAuthentications() {
-        return basicDigestAuthentications;
-    }
-
-    public void setBasicDigestAuthentications(
-            List<BasicDigestAuthentication> basicDigestAuthentications) {
-        this.basicDigestAuthentications = basicDigestAuthentications;
-    }
-
-    public List<FormAuthentication> getFormAuthentications() {
-        return formAuthentications;
-    }
-
-    public void setFormAuthentications(
-            List<FormAuthentication> formAuthentications) {
-        this.formAuthentications = formAuthentications;
     }
 
 	@Nonnull
@@ -141,25 +111,6 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 
 	public void setProxy(@Nonnull String proxy) {
 		this.proxy = proxy;
-	}
 
-	public List<Authenticator> getAuthentications() {
-        List<Authenticator> list = new ArrayList<Authenticator>();
-        list.addAll(basicDigestAuthentications);
-        list.addAll(formAuthentications);
-        return list;
-    }
-
-    public Authenticator getAuthentication(String keyName) {
-        for (Authenticator authenticator : getAuthentications()) {
-            if (authenticator.getKeyName().equals(keyName)) {
-                return authenticator;
-            }
-        }
-        return null;
-    }
-
-	public ListBoxModel doFillHttpModeItems() {
-		return HttpMode.getFillItems();
 	}
 }

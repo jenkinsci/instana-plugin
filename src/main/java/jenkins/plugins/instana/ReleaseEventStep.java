@@ -65,7 +65,7 @@ public final class ReleaseEventStep extends AbstractStepImpl {
 	}
 
 	String resolveUrl() {
-		return InstanaPluginGlobalConfig.get().getInstanaUrl();
+		return InstanaPluginGlobalConfig.get().getInstanaUrl() + InstanaPluginGlobalConfig.RELEASES_API;
 	}
 
 	HttpMode resolveHttpMode() {

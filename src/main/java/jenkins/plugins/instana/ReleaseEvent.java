@@ -32,6 +32,7 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
  */
 public class ReleaseEvent extends Builder {
 
+
 	private @Nonnull
 	String releaseName;
 	private String releaseStartTimestamp;
@@ -92,7 +93,7 @@ public class ReleaseEvent extends Builder {
 	}
 
 	String resolveUrl() {
-		return InstanaPluginGlobalConfig.get().getInstanaUrl();
+		return InstanaPluginGlobalConfig.get().getInstanaUrl() + InstanaPluginGlobalConfig.RELEASES_API;
 	}
 
 	HttpMode resolveHttpMode() {
