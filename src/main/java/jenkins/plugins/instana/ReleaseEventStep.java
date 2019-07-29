@@ -1,32 +1,38 @@
 package jenkins.plugins.instana;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import org.jenkinsci.plugins.workflow.steps.AbstractStepDescriptorImpl;
-import org.jenkinsci.plugins.workflow.steps.AbstractStepImpl;
-import org.jenkinsci.plugins.workflow.steps.AbstractSynchronousNonBlockingStepExecution;
-import org.jenkinsci.plugins.workflow.steps.StepContextParameter;
+import org.jenkinsci.plugins.workflow.steps.Step;
+import org.jenkinsci.plugins.workflow.steps.StepContext;
+import org.jenkinsci.plugins.workflow.steps.StepDescriptor;
+import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.QueryParameter;
 
+import hudson.AbortException;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.Item;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 
+import hudson.util.FormValidation;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 /**
  * @author Martin d'Anjou
  */
-public final class ReleaseEventStep extends AbstractStepImpl {
+public final class ReleaseEventStep extends Step {
 
-	private @Nonnull String releaseName;
+	private String releaseName;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
@@ -59,6 +65,11 @@ public final class ReleaseEventStep extends AbstractStepImpl {
 	}
 
 	@Override
+	public StepExecution start(StepContext stepContext) {
+		return new ReleaseEventStep.Execution( this, stepContext);
+	}
+
+	@Override
 	public DescriptorImpl getDescriptor() {
 		return (DescriptorImpl) super.getDescriptor();
 	}
@@ -83,13 +94,14 @@ public final class ReleaseEventStep extends AbstractStepImpl {
 	}
 
 	@Extension
-	public static final class DescriptorImpl extends AbstractStepDescriptorImpl {
+	public static final class DescriptorImpl extends StepDescriptor {
 		public static final String releaseName = ReleaseEvent.DescriptorImpl.releaseName;
 		public static final String releaseStartTimestamp = ReleaseEvent.DescriptorImpl.releaseStartTimestamp;
 		public static final String releaseEndTimestamp = ReleaseEvent.DescriptorImpl.releaseEndTimestamp;
 
-		public DescriptorImpl() {
-			super(Execution.class);
+		@Override
+		public Set<? extends Class<?>> getRequiredContext() {
+			return Collections.singleton(TaskListener.class);
 		}
 
 		@Override
@@ -104,21 +116,25 @@ public final class ReleaseEventStep extends AbstractStepImpl {
 
 	}
 
-	public static final class Execution extends AbstractSynchronousNonBlockingStepExecution<ResponseContentSupplier> {
+	public static final class Execution extends SynchronousNonBlockingStepExecution<ResponseContentSupplier> {
 		@Inject
 		private transient ReleaseEventStep step;
 
-		@StepContextParameter
-		private transient Run<?, ?> run;
-		@StepContextParameter
-		private transient TaskListener listener;
+		protected Execution(ReleaseEventStep step, @Nonnull StepContext context) {
+			super(context);
+			this.step = step;
+		}
 
 		@Override
 		protected ResponseContentSupplier run() throws Exception {
-			HttpRequestExecution exec = HttpRequestExecution.from(step, listener);
+			if(step.getReleaseName().trim().isEmpty())
+			{
+				throw new AbortException("Release name must not be empty");
+			}
+			HttpRequestExecution exec = HttpRequestExecution.from(step, this.getContext().get(TaskListener.class));
 
 			Launcher launcher = getContext().get(Launcher.class);
-			if (launcher != null) {
+			if (launcher != null && launcher.getChannel() != null) {
 				return launcher.getChannel().call(exec);
 			}
 
@@ -126,9 +142,5 @@ public final class ReleaseEventStep extends AbstractStepImpl {
 		}
 
 		private static final long serialVersionUID = 1L;
-
-		public Item getProject() {
-			return run.getParent();
-		}
 	}
 }

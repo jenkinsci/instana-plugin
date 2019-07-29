@@ -1,5 +1,6 @@
 package jenkins.plugins.instana;
 
+import static jenkins.plugins.instana.Registers.registerAlways200;
 import static jenkins.plugins.instana.Registers.registerReleaseEndpointChecker;
 import static jenkins.plugins.instana.Registers.registerTimeout;
 import static org.junit.Assert.assertTrue;
@@ -38,6 +39,25 @@ public class ReleaseEventTest extends ReleaseEventTestBase {
 		j.assertBuildStatusSuccess(build);
 		j.assertLogContains("{\"name\":\"testReleaseName\",\"start\":\"123456787689\"}", build);
 		j.assertLogContains("200", build);
+	}
+
+
+	@Test
+	public void emptyReleaseNameJobDefinitonWithAllParamatersSetTest() throws Exception {
+		// Prepare the server
+		registerAlways200();
+
+		// Prepare ReleaseEvent
+		ReleaseEvent releaseEvent = new ReleaseEvent("");
+		releaseEvent.setReleaseStartTimestamp("");
+
+		// Run build
+		FreeStyleProject project = j.createFreeStyleProject();
+		project.getBuildersList().add(releaseEvent);
+		FreeStyleBuild build = project.scheduleBuild2(0).get();
+
+		// Check expectations
+		j.assertBuildStatus(Result.FAILURE,build);
 	}
 
 	@Test

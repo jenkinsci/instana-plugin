@@ -1,5 +1,6 @@
 package jenkins.plugins.instana;
 
+import static jenkins.plugins.instana.Registers.registerAlways200;
 import static jenkins.plugins.instana.Registers.registerReleaseEndpointChecker;
 import static jenkins.plugins.instana.Registers.registerFailedAuthEndpoint;
 import static jenkins.plugins.instana.Registers.registerTimeout;
@@ -42,6 +43,26 @@ public class ReleaseEventStepTest extends ReleaseEventTestBase {
 		// Check expectations
 		j.assertBuildStatusSuccess(run);
 		j.assertLogContains("Status: 200", run);
+	}
+
+	@Test
+	public void wrongStepDefinitonWithAllParamatersSetTest() throws Exception {
+		// Prepare the server
+		registerAlways200();
+
+		// Configure the build
+		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
+		proj.setDefinition(new CpsFlowDefinition(
+				"def response = releaseEvent foo: 'testReleaseName', bar: '123456787689' \n" +
+						"println('Status: '+response.status)\n" +
+						"println('Response: '+response.content)\n",
+				true));
+
+		// Execute the build
+		WorkflowRun run = proj.scheduleBuild2(0).get();
+
+		// Check expectations
+		j.assertBuildStatus(Result.FAILURE,run);
 	}
 
 	@Test

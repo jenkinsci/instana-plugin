@@ -32,7 +32,7 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 	private @Nonnull String proxy;
 	private @Nonnull HttpMode httpMode = HttpMode.POST;
 
-	public static final String RELEASES_API = "/api/releases";
+	static final String RELEASES_API = "/api/releases";
 
     private static final XStream2 XSTREAM2 = new XStream2();
 
@@ -48,8 +48,7 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 
     @Override
     protected XmlFile getConfigFile() {
-        Jenkins j = Jenkins.getInstance();
-        if (j == null) return null;
+        Jenkins j = Jenkins.get();
         File rootDir = j.getRootDir();
         File xmlFile = new File(rootDir, "ReleaseEvent.xml");
         return new XmlFile(XSTREAM2, xmlFile);
@@ -57,7 +56,6 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 
     @Override
     public boolean configure(StaplerRequest req, JSONObject json)
-    throws FormException
     {
         req.bindJSON(this, json);
         save();
@@ -65,11 +63,6 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
     }
 
 	public static FormValidation validateKeyName(String value) {
-		int count = 0;
-		if (count > 1) {
-			return FormValidation.error("The Key Name must be unique");
-		}
-
 		return FormValidation.validateRequired(value);
 	}
 

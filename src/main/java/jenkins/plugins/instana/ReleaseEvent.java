@@ -9,9 +9,12 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import org.codehaus.groovy.util.StringUtil;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.QueryParameter;
 
+import hudson.AbortException;
 import hudson.EnvVars;
 import hudson.Extension;
 import hudson.Launcher;
@@ -25,6 +28,7 @@ import hudson.model.TaskListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 
+import hudson.util.FormValidation;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 /**
@@ -34,8 +38,8 @@ public class ReleaseEvent extends Builder {
 
 
 	private @Nonnull String releaseName;
-	private String releaseStartTimestamp;
-	private String releaseEndTimestamp;
+	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
+	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
 	@DataBoundConstructor
 	public ReleaseEvent(@Nonnull String releaseName) {
@@ -72,7 +76,6 @@ public class ReleaseEvent extends Builder {
 		Items.XSTREAM2.alias("pair", HttpRequestNameValuePair.class);
 	}
 
-
 	String resolveUrl() {
 		return InstanaPluginGlobalConfig.get().getInstanaUrl() + InstanaPluginGlobalConfig.RELEASES_API;
 	}
@@ -95,6 +98,10 @@ public class ReleaseEvent extends Builder {
 	@Override
 	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
 			throws InterruptedException, IOException {
+		if(releaseName.trim().isEmpty())
+		{
+			throw new AbortException("Release name must not be empty");
+		}
 		HttpRequestExecution exec = HttpRequestExecution.from(this, listener);
 		launcher.getChannel().call(exec);
 
@@ -104,8 +111,8 @@ public class ReleaseEvent extends Builder {
 	@Extension
 	public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
 		public static final String releaseName = "";
-		public static final String releaseStartTimestamp = null;
-		public static final String releaseEndTimestamp = null;
+		public static final String releaseStartTimestamp = "";
+		public static final String releaseEndTimestamp = "";
 
 		public DescriptorImpl() {
 			load();
@@ -120,6 +127,15 @@ public class ReleaseEvent extends Builder {
 		@Override
 		public String getDisplayName() {
 			return "Instana release event";
+		}
+
+		public FormValidation doCheckReleaseName(@QueryParameter String value) {
+			if(value != null && !value.trim().isEmpty()) {
+				return FormValidation.ok();
+			}
+			else {
+				return FormValidation.error("Field ist Mandatory");
+			}
 		}
 	}
 

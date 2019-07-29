@@ -1,12 +1,12 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-	<f:entry field="releaseName" title="Release name" help="/plugin/http_request/help-acceptType.html">
+	<f:entry field="releaseName" title="Release name">
 		<f:textbox />
 	</f:entry>
-	<f:entry field="releaseStartTimestamp" title="Start timestamp" help="/plugin/http_request/help-contentType.html">
+	<f:entry field="releaseStartTimestamp" title="Start timestamp">
 		<f:textbox />
 	</f:entry>
-	<f:entry field="releaseEndTimestamp" title="End timestamp" help="/plugin/http_request/help-contentType.html">
+	<f:entry field="releaseEndTimestamp" title="End timestamp">
      	<f:textbox />
 	</f:entry>
 </j:jelly>

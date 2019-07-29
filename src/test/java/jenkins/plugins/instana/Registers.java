@@ -61,6 +61,16 @@ public class Registers {
 		});
 	}
 
+	static void registerAlways200()
+	{
+		registerHandler("/api/releases", HttpMode.POST,new SimpleHandler() {
+			@Override
+			void doHandle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+				body(response,200,ContentType.APPLICATION_JSON,"");
+			}
+		});
+	}
+
 	static void registerFailedAuthEndpoint(final String name, final String timestamp, final String apiToken)
 	{
 		registerHandler("/api/releases", HttpMode.POST,new SimpleHandler() {
@@ -82,7 +92,7 @@ public class Registers {
 		// Timeout, do not respond!
 		registerHandler("/timeout", HttpMode.GET, new SimpleHandler() {
 			@Override
-			void doHandle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+			void doHandle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
 				try {
 					Thread.sleep(10000);
 				} catch (InterruptedException ex) {
