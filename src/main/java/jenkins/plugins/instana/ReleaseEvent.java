@@ -2,6 +2,7 @@ package jenkins.plugins.instana;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -101,6 +102,10 @@ public class ReleaseEvent extends Builder {
 		if(releaseName.trim().isEmpty())
 		{
 			throw new AbortException("Release name must not be empty");
+		}
+		if(releaseStartTimestamp.trim().isEmpty())
+		{
+			releaseStartTimestamp = String.valueOf(Instant.now().toEpochMilli());
 		}
 		HttpRequestExecution exec = HttpRequestExecution.from(this, listener);
 		launcher.getChannel().call(exec);

@@ -1,5 +1,6 @@
 package jenkins.plugins.instana;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -127,10 +128,7 @@ public final class ReleaseEventStep extends Step {
 
 		@Override
 		protected ResponseContentSupplier run() throws Exception {
-			if(step.getReleaseName().trim().isEmpty())
-			{
-				throw new AbortException("Release name must not be empty");
-			}
+			validateInputAndSetDefaults();
 			HttpRequestExecution exec = HttpRequestExecution.from(step, this.getContext().get(TaskListener.class));
 
 			Launcher launcher = getContext().get(Launcher.class);
@@ -139,6 +137,15 @@ public final class ReleaseEventStep extends Step {
 			}
 
 			return exec.call();
+		}
+
+		private void validateInputAndSetDefaults() throws AbortException {
+			if (step.getReleaseName().trim().isEmpty()) {
+				throw new AbortException("Release name must not be empty");
+			}
+			if (step.getReleaseStartTimestamp().trim().isEmpty()) {
+				step.setReleaseStartTimestamp(String.valueOf(Instant.now().toEpochMilli()));
+			}
 		}
 
 		private static final long serialVersionUID = 1L;
