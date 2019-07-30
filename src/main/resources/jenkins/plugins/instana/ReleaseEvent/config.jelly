@@ -6,7 +6,4 @@
 	<f:entry field="releaseStartTimestamp" title="Start timestamp">
 		<f:textbox />
 	</f:entry>
-	<f:entry field="releaseEndTimestamp" title="End timestamp">
-     	<f:textbox />
-	</f:entry>
 </j:jelly>

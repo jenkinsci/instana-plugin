@@ -127,7 +127,7 @@ public class ReleaseEvent extends Builder {
 
 		@Override
 		public String getDisplayName() {
-			return "Instana release event";
+			return "Ingest release into Instana";
 		}
 
 		public FormValidation doCheckReleaseName(@QueryParameter String value) {
