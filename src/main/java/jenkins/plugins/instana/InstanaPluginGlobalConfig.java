@@ -29,7 +29,6 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 
 	private @Nonnull String instanaUrl;
 	private @Nonnull String token;
-	private @Nonnull String proxy;
 	private @Nonnull HttpMode httpMode = HttpMode.POST;
 
 	static final String RELEASES_API = "/api/releases";
@@ -97,13 +96,4 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 		this.httpMode = httpMode;
 	}
 
-	@Nonnull
-	public String getProxy() {
-		return proxy;
-	}
-
-	public void setProxy(@Nonnull String proxy) {
-		this.proxy = proxy;
-
-	}
 }

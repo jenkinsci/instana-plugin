@@ -40,7 +40,6 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 	private static final long serialVersionUID = -2066857816168989599L;
 	private final String url;
 	private final HttpMode httpMode;
-	private final HttpHost httpProxy;
 
 	private final String body;
 	private final List<HttpRequestNameValuePair> headers;
@@ -58,7 +57,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 
 		List<HttpRequestNameValuePair> headers = http.resolveHeaders();
 
-		return new HttpRequestExecution(url, http.resolveHttpMode(), http.resolveProxy(), body,
+		return new HttpRequestExecution(url, http.resolveHttpMode(), body,
 				headers, taskListener.getLogger());
 	}
 
@@ -71,18 +70,17 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		String body = jsonObject.toString();
 		List<HttpRequestNameValuePair> headers = step.resolveHeaders();
 
-		return new HttpRequestExecution(url, step.resolveHttpMode(), step.resolveProxy(), body,
+		return new HttpRequestExecution(url, step.resolveHttpMode(), body,
 				headers, taskListener.getLogger());
 	}
 
 	private HttpRequestExecution(
 			String url, HttpMode httpMode,
-			String httpProxy, String body, List<HttpRequestNameValuePair> headers,
+			String body, List<HttpRequestNameValuePair> headers,
 			PrintStream logger
 	) {
 		this.url = url;
 		this.httpMode = httpMode;
-		this.httpProxy = StringUtils.isNotBlank(httpProxy) ? HttpHost.create(httpProxy) : null;
 
 		this.body = body;
 		this.headers = headers;
@@ -123,9 +121,6 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		try {
 			HttpClientBuilder clientBuilder = HttpClientBuilder.create();
 
-			if (this.httpProxy != null) {
-				clientBuilder.setProxy(this.httpProxy);
-			}
 			HttpClientUtil clientUtil = new HttpClientUtil();
 			HttpRequestBase httpRequestBase = clientUtil.createRequestBase(
 					new RequestAction(new URL(this.url), this.httpMode,

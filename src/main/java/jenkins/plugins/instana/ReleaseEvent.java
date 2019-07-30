@@ -85,10 +85,6 @@ public class ReleaseEvent extends Builder {
 		return InstanaPluginGlobalConfig.get().getHttpMode();
 	}
 
-	String resolveProxy() {
-		return InstanaPluginGlobalConfig.get().getProxy();
-	}
-
 	List<HttpRequestNameValuePair> resolveHeaders() {
 		final List<HttpRequestNameValuePair> headers = new ArrayList<>();
 		headers.add(new HttpRequestNameValuePair("Content-type", "application/json"));
