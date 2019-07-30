@@ -30,10 +30,11 @@ THE SOFTWARE.
 		<version>3.47</version>
 	</parent>
 
-	<artifactId>instana_plugin</artifactId>
+	<groupId>com.instana.jenkins.plugins</groupId>
+	<artifactId>instana</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>hpi</packaging>
-	<name>Instana Jenkins plugin</name>
+	<name>Instana integration</name>
 	<description>
 	</description>
 	<url></url>

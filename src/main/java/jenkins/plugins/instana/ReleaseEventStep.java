@@ -16,16 +16,12 @@ import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.QueryParameter;
 
 import hudson.AbortException;
 import hudson.Extension;
 import hudson.Launcher;
-import hudson.model.Item;
-import hudson.model.Run;
 import hudson.model.TaskListener;
 
-import hudson.util.FormValidation;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 /**
@@ -67,7 +63,7 @@ public final class ReleaseEventStep extends Step {
 
 	@Override
 	public StepExecution start(StepContext stepContext) {
-		return new ReleaseEventStep.Execution( this, stepContext);
+		return new ReleaseEventStep.Execution(this, stepContext);
 	}
 
 	@Override

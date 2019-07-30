@@ -1,16 +1,16 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
     <f:section title="HTTP Request">
-    	<f:entry field="instanaUrl" title="instana URL" help="/plugin/http_request/help-url.html">
+    	<f:entry field="instanaUrl" title="instana URL">
         	<f:textbox />
         </f:entry>
-        <f:entry field="token" title="Token" help="/plugin/http_request/help-url.html">
+        <f:entry field="token" title="Token">
         	<f:textbox />
        	</f:entry>
-       	<f:entry field="httpMode" title="HTTP mode" help="/plugin/http_request/help-httpMode.html">
+       	<f:entry field="httpMode" title="HTTP mode">
                 <f:select />
         </f:entry>
-       	<f:entry field="proxy" title="Proxy" help="/plugin/http_request/help-url.html">
+       	<f:entry field="proxy" title="Proxy">
             <f:textbox />
         </f:entry>
     </f:section>
