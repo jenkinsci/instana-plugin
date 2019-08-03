@@ -33,6 +33,8 @@ import com.cloudbees.plugins.credentials.domains.Domain;
 import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl;
 import com.google.common.io.CharStreams;
 
+import hudson.util.Secret;
+
 /**
  * @author Martin d'Anjou
  */
@@ -85,7 +87,7 @@ public class ReleaseEventTestBase {
 		credentials = new HashMap<>();
 		credentials.put(Domain.global(), new ArrayList<Credentials>());
 		InstanaPluginGlobalConfig.get().setInstanaUrl(baseURL());
-		InstanaPluginGlobalConfig.get().setToken(TEST_API_TOKEN);
+		InstanaPluginGlobalConfig.get().setToken(Secret.fromString(TEST_API_TOKEN));
 	}
 
 	@After

@@ -15,6 +15,7 @@ import hudson.XmlFile;
 import hudson.init.InitMilestone;
 import hudson.init.Initializer;
 import hudson.util.FormValidation;
+import hudson.util.Secret;
 import hudson.util.XStream2;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
@@ -28,7 +29,7 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 
 	private @Nonnull String instanaUrl;
-	private @Nonnull String token;
+	private @Nonnull Secret token;
 	private @Nonnull HttpMode httpMode = HttpMode.POST;
 
 	static final String RELEASES_API = "/api/releases";
@@ -54,9 +55,9 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
     }
 
     @Override
-    public boolean configure(StaplerRequest req, JSONObject json)
-    {
-        req.bindJSON(this, json);
+    public boolean configure(StaplerRequest req, JSONObject json) {
+        instanaUrl = json.getString("instanaUrl");
+        token = Secret.fromString(json.getString("token"));
         save();
         return true;
     }
@@ -79,11 +80,11 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 	}
 
 	@Nonnull
-	public String getToken() {
+	public Secret getToken() {
 		return token;
 	}
 
-	public void setToken(@Nonnull String token) {
+	public void setToken(@Nonnull Secret token) {
 		this.token = token;
 	}
 

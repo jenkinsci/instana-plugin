@@ -88,7 +88,7 @@ public class ReleaseEvent extends Builder {
 	List<HttpRequestNameValuePair> resolveHeaders() {
 		final List<HttpRequestNameValuePair> headers = new ArrayList<>();
 		headers.add(new HttpRequestNameValuePair("Content-type", "application/json"));
-		headers.add(new HttpRequestNameValuePair("Authorization", "apiToken " + InstanaPluginGlobalConfig.get().getToken(), true));
+		headers.add(new HttpRequestNameValuePair("Authorization", "apiToken " + InstanaPluginGlobalConfig.get().getToken().getPlainText(), true));
 		return headers;
 	}
 

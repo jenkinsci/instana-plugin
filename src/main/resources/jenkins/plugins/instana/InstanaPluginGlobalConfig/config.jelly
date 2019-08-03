@@ -5,7 +5,7 @@
         	<f:textbox />
         </f:entry>
         <f:entry field="token" title="Token">
-        	<f:textbox />
+        	<f:password />
        	</f:entry>
     </f:section>
 </j:jelly>
