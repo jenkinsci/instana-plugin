@@ -37,7 +37,9 @@ public class InstanaPluginGlobalConfig extends GlobalConfiguration {
     private static final XStream2 XSTREAM2 = new XStream2();
 
     public InstanaPluginGlobalConfig() {
-        load();
+		instanaUrl = "";
+    	token = Secret.fromString("");
+    	load();
     }
 
     @Initializer(before = InitMilestone.PLUGINS_STARTED)

@@ -15,6 +15,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.AbortException;
 import hudson.EnvVars;
 import hudson.Extension;
@@ -38,7 +39,8 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 public class ReleaseEvent extends Builder {
 
 
-	private @Nonnull String releaseName;
+	private @Nonnull
+	String releaseName;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
@@ -93,20 +95,22 @@ public class ReleaseEvent extends Builder {
 	}
 
 	@Override
+	@SuppressFBWarnings(value="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
 	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
 			throws InterruptedException, IOException {
-		if(releaseName.trim().isEmpty())
-		{
+		if (releaseName.trim().isEmpty()) {
 			throw new AbortException("Release name must not be empty");
 		}
-		if(releaseStartTimestamp.trim().isEmpty())
-		{
+		if (releaseStartTimestamp.trim().isEmpty()) {
 			releaseStartTimestamp = String.valueOf(Instant.now().toEpochMilli());
 		}
 		HttpRequestExecution exec = HttpRequestExecution.from(this, listener);
-		launcher.getChannel().call(exec);
-
-		return true;
+		if (launcher != null && launcher.getChannel() != null) {
+			launcher.getChannel().call(exec);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Extension
@@ -131,10 +135,9 @@ public class ReleaseEvent extends Builder {
 		}
 
 		public FormValidation doCheckReleaseName(@QueryParameter String value) {
-			if(value != null && !value.trim().isEmpty()) {
+			if (value != null && !value.trim().isEmpty()) {
 				return FormValidation.ok();
-			}
-			else {
+			} else {
 				return FormValidation.error("Field ist Mandatory");
 			}
 		}

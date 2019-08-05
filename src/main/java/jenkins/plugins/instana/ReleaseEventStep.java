@@ -17,6 +17,7 @@ import org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.AbortException;
 import hudson.Extension;
 import hudson.Launcher;
@@ -119,13 +120,18 @@ public final class ReleaseEventStep extends Step {
 		}
 
 		@Override
+		@SuppressFBWarnings(value="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
 		protected ResponseContentSupplier run() throws Exception {
 			validateInputAndSetDefaults();
 			HttpRequestExecution exec = HttpRequestExecution.from(step, this.getContext().get(TaskListener.class));
 
 			Launcher launcher = getContext().get(Launcher.class);
 			if (launcher != null && launcher.getChannel() != null) {
-				return launcher.getChannel().call(exec);
+				final ResponseContentSupplier supplier = launcher.getChannel().call(exec);
+				if (supplier == null){
+					throw new AbortException("Unexpected ReponseContentSupplier is null");
+				}
+				return supplier;
 			}
 
 			return exec.call();
