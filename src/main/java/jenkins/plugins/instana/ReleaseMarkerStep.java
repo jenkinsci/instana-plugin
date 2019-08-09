@@ -24,14 +24,14 @@ import hudson.Launcher;
 import hudson.model.TaskListener;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
-public final class ReleaseEventStep extends Step {
+public final class ReleaseMarkerStep extends Step {
 
 	private String releaseName;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
 	@DataBoundConstructor
-	public ReleaseEventStep(String releaseName) {
+	public ReleaseMarkerStep(String releaseName) {
 		this.releaseName = releaseName;
 	}
 
@@ -60,7 +60,7 @@ public final class ReleaseEventStep extends Step {
 
 	@Override
 	public StepExecution start(StepContext stepContext) {
-		return new ReleaseEventStep.Execution(this, stepContext);
+		return new ReleaseMarkerStep.Execution(this, stepContext);
 	}
 
 	@Override
@@ -85,9 +85,9 @@ public final class ReleaseEventStep extends Step {
 
 	@Extension
 	public static final class DescriptorImpl extends StepDescriptor {
-		public static final String releaseName = ReleaseEvent.DescriptorImpl.releaseName;
-		public static final String releaseStartTimestamp = ReleaseEvent.DescriptorImpl.releaseStartTimestamp;
-		public static final String releaseEndTimestamp = ReleaseEvent.DescriptorImpl.releaseEndTimestamp;
+		public static final String releaseName = ReleaseMarker.DescriptorImpl.releaseName;
+		public static final String releaseStartTimestamp = ReleaseMarker.DescriptorImpl.releaseStartTimestamp;
+		public static final String releaseEndTimestamp = ReleaseMarker.DescriptorImpl.releaseEndTimestamp;
 
 		@Override
 		public Set<? extends Class<?>> getRequiredContext() {
@@ -96,7 +96,7 @@ public final class ReleaseEventStep extends Step {
 
 		@Override
 		public String getFunctionName() {
-			return "releaseEvent";
+			return "releaseMarker";
 		}
 
 		@Override
@@ -108,9 +108,9 @@ public final class ReleaseEventStep extends Step {
 
 	public static final class Execution extends SynchronousNonBlockingStepExecution<ResponseContentSupplier> {
 		@Inject
-		private transient ReleaseEventStep step;
+		private transient ReleaseMarkerStep step;
 
-		protected Execution(ReleaseEventStep step, @Nonnull StepContext context) {
+		protected Execution(ReleaseMarkerStep step, @Nonnull StepContext context) {
 			super(context);
 			this.step = step;
 		}

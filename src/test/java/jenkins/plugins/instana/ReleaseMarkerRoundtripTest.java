@@ -6,7 +6,7 @@ import org.jvnet.hudson.test.JenkinsRule;
 
 import hudson.model.FreeStyleProject;
 
-public class ReleaseEventRoundtripTest {
+public class ReleaseMarkerRoundtripTest {
 
 	@Rule
 	public JenkinsRule jenkins = new JenkinsRule();
@@ -15,10 +15,10 @@ public class ReleaseEventRoundtripTest {
 	public void testConfigRoundtrip() throws Exception
 	{
 		FreeStyleProject project = jenkins.createFreeStyleProject();
-		project.getBuildersList().add(new ReleaseEvent("testReleaseName"));
+		project.getBuildersList().add(new ReleaseMarker("testReleaseName"));
 		project = jenkins.configRoundtrip(project);
 
-		ReleaseEvent myStepBuilder = new ReleaseEvent("testReleaseName");
+		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName");
 		jenkins.assertEqualDataBoundBeans(myStepBuilder, project.getBuildersList().get(0));
 	}
 }

@@ -42,7 +42,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 	private final OutputStream remoteLogger;
 	private transient PrintStream localLogger;
 
-	static HttpRequestExecution from(ReleaseEvent http, TaskListener taskListener) {
+	static HttpRequestExecution from(ReleaseMarker http, TaskListener taskListener) {
 		String url = http.resolveUrl();
 
 		JSONObject jsonObject =  new JSONObject();
@@ -56,7 +56,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 				headers, taskListener.getLogger());
 	}
 
-	static HttpRequestExecution from(ReleaseEventStep step, TaskListener taskListener) {
+	static HttpRequestExecution from(ReleaseMarkerStep step, TaskListener taskListener) {
 		String url = step.resolveUrl();
 
 		JSONObject jsonObject =  new JSONObject();

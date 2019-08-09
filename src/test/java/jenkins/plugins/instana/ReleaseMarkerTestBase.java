@@ -35,7 +35,7 @@ import com.google.common.io.CharStreams;
 
 import hudson.util.Secret;
 
-public class ReleaseEventTestBase {
+public class ReleaseMarkerTestBase {
 
 	private static ServerRunning SERVER;
 	static final String ALL_IS_WELL = "All is well";

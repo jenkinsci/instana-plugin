@@ -15,7 +15,7 @@ import org.junit.rules.TemporaryFolder;
 import hudson.model.Result;
 
 
-public class ReleaseEventStepTest extends ReleaseEventTestBase {
+public class ReleaseMarkerStepTest extends ReleaseMarkerTestBase {
 
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
@@ -28,7 +28,7 @@ public class ReleaseEventStepTest extends ReleaseEventTestBase {
 		// Configure the build
 		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
 		proj.setDefinition(new CpsFlowDefinition(
-				"def response = releaseEvent releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689' \n" +
+				"def response = releaseMarker releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689' \n" +
 						"println('Status: '+response.status)\n" +
 						"println('Response: '+response.content)\n",
 				true));
@@ -49,7 +49,7 @@ public class ReleaseEventStepTest extends ReleaseEventTestBase {
 		// Configure the build
 		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
 		proj.setDefinition(new CpsFlowDefinition(
-				"def response = releaseEvent foo: 'testReleaseName', bar: '123456787689' \n" +
+				"def response = releaseMarker foo: 'testReleaseName', bar: '123456787689' \n" +
 						"println('Status: '+response.status)\n" +
 						"println('Response: '+response.content)\n",
 				true));
@@ -68,7 +68,7 @@ public class ReleaseEventStepTest extends ReleaseEventTestBase {
 		// Configure the build
 		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
 		proj.setDefinition(new CpsFlowDefinition(
-				"def response = releaseEvent releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689' \n" +
+				"def response = releaseMarker releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689' \n" +
 						"println('Status: '+response.status)\n" +
 						"println('Response: '+response.content)\n",
 				true));
@@ -89,7 +89,7 @@ public class ReleaseEventStepTest extends ReleaseEventTestBase {
 
 		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
 		proj.setDefinition(new CpsFlowDefinition(
-				"def response = releaseEvent releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689' \n" +
+				"def response = releaseMarker releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689' \n" +
 						"println('Status: '+response.status)\n" +
 						"println('Response: '+response.content)\n",
 				true));

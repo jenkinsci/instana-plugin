@@ -14,7 +14,7 @@ import net.sf.json.JSONObject;
 import org.apache.http.entity.ContentType;
 import org.eclipse.jetty.server.Request;
 
-import jenkins.plugins.instana.ReleaseEventTestBase.SimpleHandler;
+import jenkins.plugins.instana.ReleaseMarkerTestBase.SimpleHandler;
 
 /**
  * @author Janario Oliveira
@@ -89,6 +89,6 @@ public class Registers {
 
 
 	private static void registerHandler(String target, HttpMode method, SimpleHandler handler) {
-		ReleaseEventTestBase.registerHandler(target, method, handler);
+		ReleaseMarkerTestBase.registerHandler(target, method, handler);
 	}
 }

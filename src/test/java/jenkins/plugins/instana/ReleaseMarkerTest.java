@@ -12,7 +12,7 @@ import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 
-public class ReleaseEventTest extends ReleaseEventTestBase {
+public class ReleaseMarkerTest extends ReleaseMarkerTestBase {
 
 	@Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -23,12 +23,12 @@ public class ReleaseEventTest extends ReleaseEventTestBase {
 		registerReleaseEndpointChecker("testReleaseName", "123456787689", TEST_API_TOKEN);
 
 		// Prepare ReleaseEvent
-		ReleaseEvent releaseEvent = new ReleaseEvent("testReleaseName");
-		releaseEvent.setReleaseStartTimestamp("123456787689");
+		ReleaseMarker releaseMarker = new ReleaseMarker("testReleaseName");
+		releaseMarker.setReleaseStartTimestamp("123456787689");
 
 		// Run build
 		FreeStyleProject project = j.createFreeStyleProject();
-		project.getBuildersList().add(releaseEvent);
+		project.getBuildersList().add(releaseMarker);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -44,12 +44,12 @@ public class ReleaseEventTest extends ReleaseEventTestBase {
 		registerAlways200();
 
 		// Prepare ReleaseEvent
-		ReleaseEvent releaseEvent = new ReleaseEvent("");
-		releaseEvent.setReleaseStartTimestamp("");
+		ReleaseMarker releaseMarker = new ReleaseMarker("");
+		releaseMarker.setReleaseStartTimestamp("");
 
 		// Run build
 		FreeStyleProject project = j.createFreeStyleProject();
-		project.getBuildersList().add(releaseEvent);
+		project.getBuildersList().add(releaseMarker);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations
@@ -63,13 +63,13 @@ public class ReleaseEventTest extends ReleaseEventTestBase {
 
 
 		// Prepare ReleaseEvent
-		ReleaseEvent releaseEvent = new ReleaseEvent("testReleaseName");
-		releaseEvent.setReleaseStartTimestamp("123456787689");
+		ReleaseMarker releaseMarker = new ReleaseMarker("testReleaseName");
+		releaseMarker.setReleaseStartTimestamp("123456787689");
 
 
 		// Run build
 		FreeStyleProject project = this.j.createFreeStyleProject();
-		project.getBuildersList().add(releaseEvent);
+		project.getBuildersList().add(releaseMarker);
 		FreeStyleBuild build = project.scheduleBuild2(0).get();
 
 		// Check expectations

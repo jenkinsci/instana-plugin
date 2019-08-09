@@ -26,7 +26,7 @@ import hudson.tasks.Builder;
 import hudson.util.FormValidation;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
-public class ReleaseEvent extends Builder {
+public class ReleaseMarker extends Builder {
 
 
 	private @Nonnull
@@ -35,7 +35,7 @@ public class ReleaseEvent extends Builder {
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
 	@DataBoundConstructor
-	public ReleaseEvent(@Nonnull String releaseName) {
+	public ReleaseMarker(@Nonnull String releaseName) {
 		this.releaseName = releaseName;
 	}
 
@@ -64,8 +64,8 @@ public class ReleaseEvent extends Builder {
 
 	@Initializer(before = InitMilestone.PLUGINS_STARTED)
 	public static void xStreamCompatibility() {
-		Items.XSTREAM2.aliasField("logResponseBody", ReleaseEvent.class, "consoleLogResponseBody");
-		Items.XSTREAM2.aliasField("consoleLogResponseBody", ReleaseEvent.class, "consoleLogResponseBody");
+		Items.XSTREAM2.aliasField("logResponseBody", ReleaseMarker.class, "consoleLogResponseBody");
+		Items.XSTREAM2.aliasField("consoleLogResponseBody", ReleaseMarker.class, "consoleLogResponseBody");
 		Items.XSTREAM2.alias("pair", HttpRequestNameValuePair.class);
 	}
 
