@@ -1,8 +1,8 @@
 package jenkins.plugins.instana;
 
 import static jenkins.plugins.instana.Registers.registerAlways200;
-import static jenkins.plugins.instana.Registers.registerReleaseEndpointChecker;
 import static jenkins.plugins.instana.Registers.registerFailedAuthEndpoint;
+import static jenkins.plugins.instana.Registers.registerReleaseEndpointChecker;
 import static jenkins.plugins.instana.Registers.registerTimeout;
 
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
@@ -12,13 +12,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import hudson.model.FreeStyleBuild;
-import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 
-/**
- * @author Martin d'Anjou
- */
+
 public class ReleaseEventStepTest extends ReleaseEventTestBase {
 
 	@Rule
@@ -62,7 +58,7 @@ public class ReleaseEventStepTest extends ReleaseEventTestBase {
 		WorkflowRun run = proj.scheduleBuild2(0).get();
 
 		// Check expectations
-		j.assertBuildStatus(Result.FAILURE,run);
+		j.assertBuildStatus(Result.FAILURE, run);
 	}
 
 	@Test
@@ -81,7 +77,7 @@ public class ReleaseEventStepTest extends ReleaseEventTestBase {
 		WorkflowRun run = proj.scheduleBuild2(0).get();
 
 		// Check expectations
-		j.assertBuildStatus(Result.FAILURE,run);
+		j.assertBuildStatus(Result.FAILURE, run);
 		j.assertLogContains("Unauthorized request", run);
 	}
 

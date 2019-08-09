@@ -22,12 +22,8 @@ import hudson.AbortException;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.TaskListener;
-
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
-/**
- * @author Martin d'Anjou
- */
 public final class ReleaseEventStep extends Step {
 
 	private String releaseName;

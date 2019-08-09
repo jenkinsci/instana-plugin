@@ -1,8 +1,6 @@
 package jenkins.plugins.instana;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -19,12 +17,9 @@ import hudson.util.Secret;
 import hudson.util.XStream2;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
-
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
-/**
- * @author Martin d'Anjou
- */
+
 @Extension
 public class InstanaPluginGlobalConfig extends GlobalConfiguration {
 

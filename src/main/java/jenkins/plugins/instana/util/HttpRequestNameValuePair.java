@@ -11,9 +11,7 @@ import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.util.FormValidation;
 
-/**
- * @author Janario Oliveira
- */
+
 public class HttpRequestNameValuePair extends AbstractDescribableImpl<HttpRequestNameValuePair>
         implements NameValuePair, Serializable {
 

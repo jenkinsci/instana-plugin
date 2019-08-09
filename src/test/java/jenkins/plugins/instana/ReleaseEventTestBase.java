@@ -35,9 +35,6 @@ import com.google.common.io.CharStreams;
 
 import hudson.util.Secret;
 
-/**
- * @author Martin d'Anjou
- */
 public class ReleaseEventTestBase {
 
 	private static ServerRunning SERVER;

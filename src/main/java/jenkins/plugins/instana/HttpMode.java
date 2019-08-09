@@ -2,9 +2,6 @@ package jenkins.plugins.instana;
 
 import hudson.util.ListBoxModel;
 
-/**
- * @author Janario Oliveira
- */
 public enum HttpMode {
 	GET,
 	HEAD,

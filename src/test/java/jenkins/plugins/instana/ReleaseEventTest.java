@@ -3,7 +3,6 @@ package jenkins.plugins.instana;
 import static jenkins.plugins.instana.Registers.registerAlways200;
 import static jenkins.plugins.instana.Registers.registerReleaseEndpointChecker;
 import static jenkins.plugins.instana.Registers.registerTimeout;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,9 +12,6 @@ import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 
-/**
- * @author Martin d'Anjou
- */
 public class ReleaseEventTest extends ReleaseEventTestBase {
 
 	@Rule

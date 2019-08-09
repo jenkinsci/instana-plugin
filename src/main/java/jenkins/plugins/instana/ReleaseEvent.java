@@ -1,23 +1,18 @@
 package jenkins.plugins.instana;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import org.codehaus.groovy.util.StringUtil;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.AbortException;
-import hudson.EnvVars;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.init.InitMilestone;
@@ -26,16 +21,11 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.BuildListener;
 import hudson.model.Items;
-import hudson.model.TaskListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
-
 import hudson.util.FormValidation;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
-/**
- * @author Janario Oliveira
- */
 public class ReleaseEvent extends Builder {
 
 

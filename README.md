@@ -1,4 +1,4 @@
-# Instana Plugin for Jenkins
+# Instana Pipeline Feedback Integration for Jenkins
 
 This plugin provides you with teh possibility to inject events into Instana
 
@@ -8,7 +8,7 @@ This plugin provides you with teh possibility to inject events into Instana
 The following features are available in both Pipeline and traditional
 project types:
 
-* Injecting releases into instana 
+* Injecting releases into Instana 
 
 ### Pipeline features
 To ingest a release event into Instana you simply need to add 

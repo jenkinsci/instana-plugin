@@ -7,18 +7,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.QueryParameter;
 
-import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
-import hudson.model.Descriptor;
-import hudson.util.FormValidation;
-import hudson.util.ListBoxModel;
 import jenkins.plugins.instana.HttpMode;
 
-/**
- * @author Janario Oliveira
- */
+
 public class RequestAction extends AbstractDescribableImpl<RequestAction> implements Serializable {
 
 	private static final long serialVersionUID = 7846277147434838878L;

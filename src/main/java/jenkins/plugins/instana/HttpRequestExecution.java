@@ -1,7 +1,5 @@
 package jenkins.plugins.instana;
 
-import net.sf.json.JSONObject;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -13,8 +11,8 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpHost;
+import net.sf.json.JSONObject;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -26,15 +24,12 @@ import hudson.AbortException;
 import hudson.CloseProofOutputStream;
 import hudson.model.TaskListener;
 import hudson.remoting.RemoteOutputStream;
-import jenkins.security.MasterToSlaveCallable;
-
 import jenkins.plugins.instana.util.HttpClientUtil;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 import jenkins.plugins.instana.util.RequestAction;
+import jenkins.security.MasterToSlaveCallable;
 
-/**
- * @author Janario Oliveira
- */
+
 public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentSupplier, RuntimeException> {
 
 	private static final long serialVersionUID = -2066857816168989599L;
