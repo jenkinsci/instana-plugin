@@ -36,8 +36,9 @@ THE SOFTWARE.
 	<packaging>hpi</packaging>
 	<name>Instana integration</name>
 	<description>
+		Instana Pipeline Feedback Integration for Jenkins
 	</description>
-	<url></url>
+	<url>https://github.com/jenkinsci/instana-plugin</url>
 
 	<licenses>
 		<license>
