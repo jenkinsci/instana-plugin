@@ -121,7 +121,7 @@ public class ReleaseMarker extends Builder {
 
 		@Override
 		public String getDisplayName() {
-			return "Ingest release into Instana";
+			return "Mark release in Instana";
 		}
 
 		public FormValidation doCheckReleaseName(@QueryParameter String value) {
