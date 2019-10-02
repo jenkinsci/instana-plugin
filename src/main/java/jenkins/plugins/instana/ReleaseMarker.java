@@ -128,7 +128,7 @@ public class ReleaseMarker extends Builder {
 			if (value != null && !value.trim().isEmpty()) {
 				return FormValidation.ok();
 			} else {
-				return FormValidation.error("Field ist Mandatory");
+				return FormValidation.error("Field is Mandatory");
 			}
 		}
 	}
