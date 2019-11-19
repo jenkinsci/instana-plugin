@@ -124,6 +124,7 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 							this.headers));
 
 			HttpContext context = new BasicHttpContext();
+			clientBuilder.useSystemProperties();
 			httpclient = clientBuilder.build();
 
 			final ResponseContentSupplier response = executeRequest(httpclient, clientUtil, httpRequestBase, context);
