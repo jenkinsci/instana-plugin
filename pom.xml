@@ -40,6 +40,11 @@ THE SOFTWARE.
 	</description>
 	<url>https://github.com/jenkinsci/instana-plugin</url>
 
+	<scm>
+		<url>https://github.com:jenkinsci/instana-plugin</url>
+		<connection>scm:git:git@github.com:jenkinsci/instana-plugin.git</connection>
+	</scm>
+
 	<licenses>
 		<license>
 			<name>The MIT license</name>
@@ -50,6 +55,7 @@ THE SOFTWARE.
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.scm.url>git@github.com:jenkinsci/instana-plugin.git</project.scm.url>
 		<jenkins.version>2.164.1</jenkins.version>
 		<java.level>8</java.level>
 		<pipeline.version>2.4</pipeline.version>
