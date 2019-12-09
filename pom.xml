@@ -165,6 +165,9 @@ THE SOFTWARE.
 	</dependencies>
 
   <scm>
+    <connection>scm:git:ssh://git@github.com/jenkinsci/instana-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/instana-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/instana-plugin</url>
     <tag>instana-1.0.3</tag>
   </scm>
 </project>
