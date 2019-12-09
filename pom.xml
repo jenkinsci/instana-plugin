@@ -32,18 +32,13 @@ THE SOFTWARE.
 
 	<groupId>com.instana.jenkins.plugins</groupId>
 	<artifactId>instana</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>hpi</packaging>
 	<name>Instana integration</name>
 	<description>
 		Instana Pipeline Feedback Integration for Jenkins
 	</description>
 	<url>https://github.com/jenkinsci/instana-plugin</url>
-
-	<scm>
-		<url>https://github.com:jenkinsci/instana-plugin</url>
-		<connection>scm:git:git@github.com:jenkinsci/instana-plugin.git</connection>
-	</scm>
 
 	<licenses>
 		<license>
