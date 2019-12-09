@@ -32,7 +32,7 @@ THE SOFTWARE.
 
 	<groupId>com.instana.jenkins.plugins</groupId>
 	<artifactId>instana</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<packaging>hpi</packaging>
 	<name>Instana integration</name>
 	<description>
@@ -163,4 +163,8 @@ THE SOFTWARE.
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+  <scm>
+    <tag>instana-1.0.3</tag>
+  </scm>
 </project>
