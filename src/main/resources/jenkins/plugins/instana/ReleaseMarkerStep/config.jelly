@@ -6,4 +6,22 @@
 	<f:entry field="releaseStartTimestamp" title="Start timestamp">
 		<f:textbox />
 	</f:entry>
+	<f:entry title="Service name">
+		<f:repeatableProperty field="serviceNames">
+			<f:entry title="">
+				<div align="right">
+					<f:repeatableDeleteButton/>
+				</div>
+			</f:entry>
+		</f:repeatableProperty>
+	</f:entry>
+	<f:entry title="Application name">
+		<f:repeatableProperty field="applicationNames">
+			<f:entry title="">
+				<div align="right">
+					<f:repeatableDeleteButton/>
+				</div>
+			</f:entry>
+		</f:repeatableProperty>
+	</f:entry>
 </j:jelly>

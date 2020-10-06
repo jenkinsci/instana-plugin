@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
@@ -28,15 +29,27 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 public class ReleaseMarker extends Builder {
 
-
 	private @Nonnull
 	String releaseName;
+	private List<String> serviceNames = DescriptorImpl.serviceNames;
+	private List<String> applicationNames = DescriptorImpl.applicationNames;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
 	@DataBoundConstructor
 	public ReleaseMarker(@Nonnull String releaseName) {
 		this.releaseName = releaseName;
+	}
+
+	public ReleaseMarker(@Nonnull String releaseName, @Nullable List<String> serviceNames,
+						 @Nullable List<String> applicationNames) {
+		this.releaseName = releaseName;
+		if (serviceNames != null) {
+			this.serviceNames = serviceNames;
+		}
+		if (applicationNames != null) {
+			this.applicationNames = applicationNames;
+		}
 	}
 
 	@Nonnull
@@ -60,6 +73,24 @@ public class ReleaseMarker extends Builder {
 	@DataBoundSetter
 	public void setReleaseEndTimestamp(String releaseEndTimestamp) {
 		this.releaseEndTimestamp = releaseEndTimestamp;
+	}
+
+	public List<String> getServiceNames() {
+		return serviceNames;
+	}
+
+	@DataBoundSetter
+	public void setServiceNames(List<String> serviceNames) {
+		this.serviceNames = serviceNames;
+	}
+
+	public List<String> getApplicationNames() {
+		return applicationNames;
+	}
+
+	@DataBoundSetter
+	public void setApplicationNames(List<String> applicationNames) {
+		this.applicationNames = applicationNames;
 	}
 
 	@Initializer(before = InitMilestone.PLUGINS_STARTED)
@@ -106,6 +137,8 @@ public class ReleaseMarker extends Builder {
 	@Extension
 	public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
 		public static final String releaseName = "";
+		public static final List<String> serviceNames = null;
+		public static final List<String> applicationNames = null;
 		public static final String releaseStartTimestamp = "";
 		public static final String releaseEndTimestamp = "";
 

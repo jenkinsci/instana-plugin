@@ -4,6 +4,8 @@ import static jenkins.plugins.instana.Registers.registerAlways200;
 import static jenkins.plugins.instana.Registers.registerReleaseEndpointChecker;
 import static jenkins.plugins.instana.Registers.registerTimeout;
 
+import java.util.Arrays;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -25,6 +27,8 @@ public class ReleaseMarkerTest extends ReleaseMarkerTestBase {
 		// Prepare ReleaseEvent
 		ReleaseMarker releaseMarker = new ReleaseMarker("testReleaseName");
 		releaseMarker.setReleaseStartTimestamp("123456787689");
+		releaseMarker.setApplicationNames(Arrays.asList("application1", "application2"));
+		releaseMarker.setServiceNames(Arrays.asList("service1", "service2"));
 
 		// Run build
 		FreeStyleProject project = j.createFreeStyleProject();
@@ -33,7 +37,9 @@ public class ReleaseMarkerTest extends ReleaseMarkerTestBase {
 
 		// Check expectations
 		j.assertBuildStatusSuccess(build);
-		j.assertLogContains("{\"name\":\"testReleaseName\",\"start\":\"123456787689\"}", build);
+		j.assertLogContains("\"name\":\"testReleaseName\",\"start\":\"123456787689\"", build);
+		j.assertLogContains("\"services\":[{\"name\":\"service1\"},{\"name\":\"service2\"}]," +
+				"\"applications\":[{\"name\":\"application1\"},{\"name\":\"application2\"}]", build);
 		j.assertLogContains("200", build);
 	}
 

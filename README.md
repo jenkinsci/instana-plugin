@@ -14,7 +14,7 @@ project types:
 To ingest a Release Marker into Instana you simply need to add 
 `releaseMarker` to your Pipeline script .
 
-There is one mandatory parameter `releaseName`
+There is one mandatory parameter `releaseName` and two optional parameters `serviceNames` and `applicationNames`.
 
 For example
 ```groovy
@@ -30,3 +30,16 @@ If you wish to create a release for a particular timestamp you can use the optio
 ```groovy
 releaseMarker releaseName: "Test Release ${currentBuild.number}", releaseStartTimestamp: "1564486446000"
 ```
+
+To create a release scoped to a given service or application you can add the `serviceNames` or `applicationNames` as parameter
+
+```groovy
+// service scoped
+releaseMarker releaseName: "Release 4711", serviceNames: ["my-service"]
+```
+
+```groovy
+// application scoped
+releaseMarker releaseName: "Release 4711", applicationNames: ["My Application"]
+```
+

@@ -9,6 +9,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.json.JSONObject;
@@ -48,8 +49,26 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		JSONObject jsonObject =  new JSONObject();
 		jsonObject.put("name", http.getReleaseName());
 		jsonObject.put("start", http.getReleaseStartTimestamp());
+		if (http.getServiceNames() != null) {
+			List<JSONObject> services = new ArrayList<>();
+			for (String serviceName : http.getServiceNames()) {
+				JSONObject service = new JSONObject();
+				service.put("name", serviceName);
+				services.add(service);
+			}
+			jsonObject.put("services", services);
+		}
+		if (http.getApplicationNames() != null) {
+			List<JSONObject> applications = new ArrayList<>();
+			for (String applicationName : http.getApplicationNames()) {
+				JSONObject service = new JSONObject();
+				service.put("name", applicationName);
+				applications.add(service);
+			}
+			jsonObject.put("applications", applications);
+		}
 		String body = jsonObject.toString();
-
+		System.out.println(body);
 		List<HttpRequestNameValuePair> headers = http.resolveHeaders();
 
 		return new HttpRequestExecution(url, http.resolveHttpMode(), body,
@@ -62,7 +81,26 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		JSONObject jsonObject =  new JSONObject();
 		jsonObject.put("name", step.getReleaseName());
 		jsonObject.put("start", step.getReleaseStartTimestamp());
+		if (step.getServiceNames() != null) {
+			List<JSONObject> services = new ArrayList<>();
+			for (String serviceName : step.getServiceNames()) {
+				JSONObject service = new JSONObject();
+				service.put("name", serviceName);
+				services.add(service);
+			}
+			jsonObject.put("services", services);
+		}
+		if (step.getApplicationNames() != null) {
+			List<JSONObject> applications = new ArrayList<>();
+			for (String applicationName : step.getApplicationNames()) {
+				JSONObject service = new JSONObject();
+				service.put("name", applicationName);
+				applications.add(service);
+			}
+			jsonObject.put("applications", applications);
+		}
 		String body = jsonObject.toString();
+		System.out.println(body);
 		List<HttpRequestNameValuePair> headers = step.resolveHeaders();
 
 		return new HttpRequestExecution(url, step.resolveHttpMode(), body,
