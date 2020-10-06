@@ -21,7 +21,7 @@ import jenkins.plugins.instana.ReleaseMarkerTestBase.SimpleHandler;
  */
 public class Registers {
 
-	static void registerReleaseEndpointChecker(final String name, final String timestamp, final String apiToken)
+	static void registerReleaseEndpointChecker(final String name, final String serviceName, final String applicationName, final String timestamp, final String apiToken)
 	{
 		registerHandler("/api/releases", HttpMode.POST,new SimpleHandler() {
 			@Override
@@ -30,6 +30,12 @@ public class Registers {
 				final JSONObject jsonObject = JSONObject.fromObject(body);
 				assertEquals(jsonObject.getString("name"),name);
 				assertEquals(jsonObject.getString("start"),timestamp);
+				if (serviceName != null) {
+					assertEquals(jsonObject.getString("serviceName"),serviceName);
+				}
+				if (applicationName != null) {
+					assertEquals(jsonObject.getString("applicationName"),applicationName);
+				}
 
 				Enumeration<String> authHeaders = request.getHeaders("Authorization");
 				String authHeaderValue = authHeaders.nextElement();
@@ -44,6 +50,11 @@ public class Registers {
 				body(response,200,ContentType.APPLICATION_JSON,jsonObject.toString());
 			}
 		});
+	}
+
+	static void registerReleaseEndpointChecker(final String name, final String timestamp, final String apiToken)
+	{
+		registerReleaseEndpointChecker(name, null, null, timestamp, apiToken);
 	}
 
 	static void registerAlways200()

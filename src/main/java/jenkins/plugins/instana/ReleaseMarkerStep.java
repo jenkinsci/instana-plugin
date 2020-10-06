@@ -27,6 +27,8 @@ import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 public final class ReleaseMarkerStep extends Step {
 
 	private String releaseName;
+	private String serviceName = DescriptorImpl.serviceName;
+	private String applicationName = DescriptorImpl.applicationName;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
@@ -58,6 +60,24 @@ public final class ReleaseMarkerStep extends Step {
 		this.releaseEndTimestamp = releaseEndTimestamp;
 	}
 
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	@DataBoundSetter
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public String getApplicationName() {
+		return applicationName;
+	}
+
+	@DataBoundSetter
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
+
 	@Override
 	public StepExecution start(StepContext stepContext) {
 		return new ReleaseMarkerStep.Execution(this, stepContext);
@@ -86,6 +106,8 @@ public final class ReleaseMarkerStep extends Step {
 	@Extension
 	public static final class DescriptorImpl extends StepDescriptor {
 		public static final String releaseName = ReleaseMarker.DescriptorImpl.releaseName;
+		public static final String serviceName = ReleaseMarker.DescriptorImpl.serviceName;
+		public static final String applicationName = ReleaseMarker.DescriptorImpl.applicationName;
 		public static final String releaseStartTimestamp = ReleaseMarker.DescriptorImpl.releaseStartTimestamp;
 		public static final String releaseEndTimestamp = ReleaseMarker.DescriptorImpl.releaseEndTimestamp;
 

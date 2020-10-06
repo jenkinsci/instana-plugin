@@ -21,7 +21,7 @@ public class ReleaseMarkerStepTest extends ReleaseMarkerTestBase {
 	public TemporaryFolder folder = new TemporaryFolder();
 
 	@Test
-	public void correctStepDefinitonWithAllParamatersSetTest() throws Exception {
+	public void correctStepDefinitonWithParametersSetTest() throws Exception {
 		// Prepare the server
 		registerReleaseEndpointChecker("testReleaseName", "123456787689", TEST_API_TOKEN);
 
@@ -29,6 +29,28 @@ public class ReleaseMarkerStepTest extends ReleaseMarkerTestBase {
 		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
 		proj.setDefinition(new CpsFlowDefinition(
 				"def response = releaseMarker releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689' \n" +
+						"println('Status: '+response.status)\n" +
+						"println('Response: '+response.content)\n",
+				true));
+
+		// Execute the build
+		WorkflowRun run = proj.scheduleBuild2(0).get();
+
+		// Check expectations
+		j.assertBuildStatusSuccess(run);
+		j.assertLogContains("Status: 200", run);
+	}
+
+	@Test
+	public void correctStepDefinitonWithAllParametersSetTest() throws Exception {
+		// Prepare the server
+		registerReleaseEndpointChecker("testReleaseName", "testServiceName", "testApplicationName", "123456787689", TEST_API_TOKEN);
+
+		// Configure the build
+		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
+		proj.setDefinition(new CpsFlowDefinition(
+				"def response = releaseMarker releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689', " +
+						"serviceName: 'testServiceName', applicationName: 'testApplicationName' \n" +
 						"println('Status: '+response.status)\n" +
 						"println('Response: '+response.content)\n",
 				true));

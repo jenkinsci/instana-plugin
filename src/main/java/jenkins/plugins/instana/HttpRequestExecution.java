@@ -62,6 +62,12 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		JSONObject jsonObject =  new JSONObject();
 		jsonObject.put("name", step.getReleaseName());
 		jsonObject.put("start", step.getReleaseStartTimestamp());
+		if (step.getServiceName() != null && !step.getServiceName().trim().isEmpty()) {
+			jsonObject.put("serviceName", step.getServiceName());
+		}
+		if (step.getApplicationName() != null && !step.getApplicationName().trim().isEmpty()) {
+			jsonObject.put("applicationName", step.getApplicationName());
+		}
 		String body = jsonObject.toString();
 		List<HttpRequestNameValuePair> headers = step.resolveHeaders();
 

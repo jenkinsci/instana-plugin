@@ -6,4 +6,10 @@
 	<f:entry field="releaseStartTimestamp" title="Start timestamp">
 		<f:textbox />
 	</f:entry>
+	<f:entry field="serviceName" title="Service name (optional)">
+		<f:textbox />
+	</f:entry>
+	<f:entry field="applicationName" title="Application name (optional)">
+		<f:textbox />
+	</f:entry>
 </j:jelly>
