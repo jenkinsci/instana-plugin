@@ -1,5 +1,6 @@
 package jenkins.plugins.instana.scope;
 
+import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import hudson.Extension;
@@ -19,6 +20,7 @@ public class Application extends AbstractDescribableImpl<Application> {
 		return name;
 	}
 
+	@Symbol("application")
 	@Extension
 	public static final class DescriptorImpl extends Descriptor<Application> {
 

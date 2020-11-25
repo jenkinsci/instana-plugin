@@ -29,8 +29,8 @@ public class ReleaseMarkerTest extends ReleaseMarkerTestBase {
 		// Prepare ReleaseEvent
 		ReleaseMarker releaseMarker = new ReleaseMarker("testReleaseName");
 		releaseMarker.setReleaseStartTimestamp("123456787689");
-		releaseMarker.setApplicationNames(Arrays.asList(new Application("application1"), new Application("application2")));
-		releaseMarker.setServiceNames(Arrays.asList(new Service("service1"), new Service("service2")));
+		releaseMarker.setApplications(Arrays.asList(new Application("application1"), new Application("application2")));
+		releaseMarker.setServices(Arrays.asList(new Service("service1"), new Service("service2")));
 
 		// Run build
 		FreeStyleProject project = j.createFreeStyleProject();

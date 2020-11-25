@@ -22,13 +22,15 @@ import hudson.AbortException;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.TaskListener;
+import jenkins.plugins.instana.scope.Application;
+import jenkins.plugins.instana.scope.Service;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 public final class ReleaseMarkerStep extends Step {
 
 	private String releaseName;
-	private List<String> serviceNames = DescriptorImpl.serviceNames;
-	private List<String> applicationNames = DescriptorImpl.applicationNames;
+	private List<Service> services = DescriptorImpl.services;
+	private List<Application> applications = DescriptorImpl.applications;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
@@ -60,22 +62,22 @@ public final class ReleaseMarkerStep extends Step {
 		this.releaseEndTimestamp = releaseEndTimestamp;
 	}
 
-	public List<String> getServiceNames() {
-		return serviceNames;
+	public List<Service> getServices() {
+		return services;
 	}
 
 	@DataBoundSetter
-	public void setServiceNames(List<String> serviceNames) {
-		this.serviceNames = serviceNames;
+	public void setServices(List<Service> services) {
+		this.services = services;
 	}
 
-	public List<String> getApplicationNames() {
-		return applicationNames;
+	public List<Application> getApplications() {
+		return applications;
 	}
 
 	@DataBoundSetter
-	public void setApplicationNames(List<String> applicationNames) {
-		this.applicationNames = applicationNames;
+	public void setApplications(List<Application> applications) {
+		this.applications = applications;
 	}
 
 	@Override
@@ -106,8 +108,8 @@ public final class ReleaseMarkerStep extends Step {
 	@Extension
 	public static final class DescriptorImpl extends StepDescriptor {
 		public static final String releaseName = ReleaseMarker.DescriptorImpl.releaseName;
-		public static final List<String> serviceNames = ReleaseMarker.DescriptorImpl.serviceNames;
-		public static final List<String> applicationNames = ReleaseMarker.DescriptorImpl.applicationNames;
+		public static final List<Service> services = ReleaseMarker.DescriptorImpl.services;
+		public static final List<Application> applications = ReleaseMarker.DescriptorImpl.applications;
 		public static final String releaseStartTimestamp = ReleaseMarker.DescriptorImpl.releaseStartTimestamp;
 		public static final String releaseEndTimestamp = ReleaseMarker.DescriptorImpl.releaseEndTimestamp;
 

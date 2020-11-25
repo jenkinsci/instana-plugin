@@ -51,21 +51,21 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		JSONObject jsonObject =  new JSONObject();
 		jsonObject.put("name", http.getReleaseName());
 		jsonObject.put("start", http.getReleaseStartTimestamp());
-		if (http.getServiceNames() != null) {
+		if (http.getServices() != null) {
 			List<JSONObject> services = new ArrayList<>();
-			for (Service serviceName : http.getServiceNames()) {
-				JSONObject service = new JSONObject();
-				service.put("name", serviceName.getName());
-				services.add(service);
+			for (Service service : http.getServices()) {
+				JSONObject serviceJson = new JSONObject();
+				serviceJson.put("name", service.getName());
+				services.add(serviceJson);
 			}
 			jsonObject.put("services", services);
 		}
-		if (http.getApplicationNames() != null) {
+		if (http.getApplications() != null) {
 			List<JSONObject> applications = new ArrayList<>();
-			for (Application applicationName : http.getApplicationNames()) {
-				JSONObject application = new JSONObject();
-				application.put("name", applicationName.getName());
-				applications.add(application);
+			for (Application application : http.getApplications()) {
+				JSONObject applicationJson = new JSONObject();
+				applicationJson.put("name", application.getName());
+				applications.add(applicationJson);
 			}
 			jsonObject.put("applications", applications);
 		}
@@ -82,21 +82,21 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		JSONObject jsonObject =  new JSONObject();
 		jsonObject.put("name", step.getReleaseName());
 		jsonObject.put("start", step.getReleaseStartTimestamp());
-		if (step.getServiceNames() != null) {
+		if (step.getServices() != null) {
 			List<JSONObject> services = new ArrayList<>();
-			for (String serviceName : step.getServiceNames()) {
-				JSONObject service = new JSONObject();
-				service.put("name", serviceName);
-				services.add(service);
+			for (Service service : step.getServices()) {
+				JSONObject serviceJson = new JSONObject();
+				serviceJson.put("name", service.getName());
+				services.add(serviceJson);
 			}
 			jsonObject.put("services", services);
 		}
-		if (step.getApplicationNames() != null) {
+		if (step.getApplications() != null) {
 			List<JSONObject> applications = new ArrayList<>();
-			for (String applicationName : step.getApplicationNames()) {
-				JSONObject application = new JSONObject();
-				application.put("name", applicationName);
-				applications.add(application);
+			for (Application application : step.getApplications()) {
+				JSONObject applicationJson = new JSONObject();
+				applicationJson.put("name", application.getName());
+				applications.add(applicationJson);
 			}
 			jsonObject.put("applications", applications);
 		}

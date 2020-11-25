@@ -33,8 +33,8 @@ public class ReleaseMarker extends Builder {
 
 	private @Nonnull
 	String releaseName;
-	private List<Service> serviceNames;
-	private List<Application> applicationNames;
+	private List<Service> services;
+	private List<Application> applications;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
@@ -44,14 +44,14 @@ public class ReleaseMarker extends Builder {
 
 	@DataBoundConstructor
 	public ReleaseMarker(@Nonnull String releaseName,
-						 @Nullable List<Service> serviceNames,
-						 @Nullable List<Application> applicationNames) {
+						 @Nullable List<Service> services,
+						 @Nullable List<Application> applications) {
 		this.releaseName = releaseName;
-		if (serviceNames != null) {
-			this.serviceNames = serviceNames;
+		if (services != null) {
+			this.services = services;
 		}
-		if (applicationNames != null) {
-			this.applicationNames = applicationNames;
+		if (applications != null) {
+			this.applications = applications;
 		}
 	}
 
@@ -78,22 +78,22 @@ public class ReleaseMarker extends Builder {
 		this.releaseEndTimestamp = releaseEndTimestamp;
 	}
 
-	public List<Service> getServiceNames() {
-		return serviceNames;
+	public List<Service> getServices() {
+		return services;
 	}
 
 	@DataBoundSetter
-	public void setServiceNames(List<Service> serviceNames) {
-		this.serviceNames = serviceNames;
+	public void setServices(List<Service> services) {
+		this.services = services;
 	}
 
-	public List<Application> getApplicationNames() {
-		return applicationNames;
+	public List<Application> getApplications() {
+		return applications;
 	}
 
 	@DataBoundSetter
-	public void setApplicationNames(List<Application> applicationNames) {
-		this.applicationNames = applicationNames;
+	public void setApplications(List<Application> applications) {
+		this.applications = applications;
 	}
 
 	@Initializer(before = InitMilestone.PLUGINS_STARTED)
@@ -140,8 +140,8 @@ public class ReleaseMarker extends Builder {
 	@Extension
 	public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
 		public static final String releaseName = "";
-		public static final List<String> serviceNames = null;
-		public static final List<String> applicationNames = null;
+		public static final List<Service> services = null;
+		public static final List<Application> applications = null;
 		public static final String releaseStartTimestamp = "";
 		public static final String releaseEndTimestamp = "";
 

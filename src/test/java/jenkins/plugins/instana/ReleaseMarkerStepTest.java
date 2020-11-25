@@ -54,8 +54,8 @@ public class ReleaseMarkerStepTest extends ReleaseMarkerTestBase {
 		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
 		proj.setDefinition(new CpsFlowDefinition(
 				"def response = releaseMarker releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689', " +
-						"serviceNames: ['testServiceName1', 'testServiceName2'], " +
-						"applicationNames: ['testApplicationName1', 'testApplicationName2'] \n" +
+						"services: [service(name:'testServiceName1'), service(name:'testServiceName2')], " +
+						"applications: [application('testApplicationName1'), application('testApplicationName2')] \n" +
 						"println('Status: '+response.status)\n" +
 						"println('Response: '+response.content)\n",
 				true));
