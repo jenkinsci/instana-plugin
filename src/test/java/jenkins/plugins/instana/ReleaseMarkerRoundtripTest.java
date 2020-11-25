@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import hudson.model.FreeStyleProject;
+import jenkins.plugins.instana.scope.Application;
+import jenkins.plugins.instana.scope.Service;
 
 public class ReleaseMarkerRoundtripTest {
 
@@ -28,10 +30,10 @@ public class ReleaseMarkerRoundtripTest {
 	public void testConfigRoundtripWithService() throws Exception
 	{
 		FreeStyleProject project = jenkins.createFreeStyleProject();
-		project.getBuildersList().add(new ReleaseMarker("testReleaseName", Collections.singletonList("testServiceName"), null));
+		project.getBuildersList().add(new ReleaseMarker("testReleaseName", Collections.singletonList(new Service("testServiceName")), null));
 		project = jenkins.configRoundtrip(project);
 
-		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName", Collections.singletonList("testServiceName"), null);
+		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName", Collections.singletonList(new Service("testServiceName")), null);
 		jenkins.assertEqualDataBoundBeans(myStepBuilder, project.getBuildersList().get(0));
 	}
 
@@ -39,10 +41,10 @@ public class ReleaseMarkerRoundtripTest {
 	public void testConfigRoundtripWithApplication() throws Exception
 	{
 		FreeStyleProject project = jenkins.createFreeStyleProject();
-		project.getBuildersList().add(new ReleaseMarker("testReleaseName", null, Collections.singletonList("testApplicationName")));
+		project.getBuildersList().add(new ReleaseMarker("testReleaseName", null, Collections.singletonList(new Application("testApplicationName"))));
 		project = jenkins.configRoundtrip(project);
 
-		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName", null, Collections.singletonList("testApplicationName"));
+		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName", null, Collections.singletonList(new Application("testApplicationName")));
 		jenkins.assertEqualDataBoundBeans(myStepBuilder, project.getBuildersList().get(0));
 	}
 
@@ -50,10 +52,10 @@ public class ReleaseMarkerRoundtripTest {
 	public void testConfigRoundtripWithServiceAndApplication() throws Exception
 	{
 		FreeStyleProject project = jenkins.createFreeStyleProject();
-		project.getBuildersList().add(new ReleaseMarker("testReleaseName", Collections.singletonList("testServiceName"), Collections.singletonList("testApplicationName")));
+		project.getBuildersList().add(new ReleaseMarker("testReleaseName", Collections.singletonList(new Service("testServiceName")), Collections.singletonList(new Application("testApplicationName"))));
 		project = jenkins.configRoundtrip(project);
 
-		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName", Collections.singletonList("testServiceName"), Collections.singletonList("testApplicationName"));
+		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName", Collections.singletonList(new Service("testServiceName")), Collections.singletonList(new Application("testApplicationName")));
 		jenkins.assertEqualDataBoundBeans(myStepBuilder, project.getBuildersList().get(0));
 	}
 }

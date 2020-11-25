@@ -13,6 +13,8 @@ import org.junit.rules.TemporaryFolder;
 import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 import hudson.model.Result;
+import jenkins.plugins.instana.scope.Application;
+import jenkins.plugins.instana.scope.Service;
 
 public class ReleaseMarkerTest extends ReleaseMarkerTestBase {
 
@@ -27,8 +29,8 @@ public class ReleaseMarkerTest extends ReleaseMarkerTestBase {
 		// Prepare ReleaseEvent
 		ReleaseMarker releaseMarker = new ReleaseMarker("testReleaseName");
 		releaseMarker.setReleaseStartTimestamp("123456787689");
-		releaseMarker.setApplicationNames(Arrays.asList("application1", "application2"));
-		releaseMarker.setServiceNames(Arrays.asList("service1", "service2"));
+		releaseMarker.setApplicationNames(Arrays.asList(new Application("application1"), new Application("application2")));
+		releaseMarker.setServiceNames(Arrays.asList(new Service("service1"), new Service("service2")));
 
 		// Run build
 		FreeStyleProject project = j.createFreeStyleProject();

@@ -25,6 +25,8 @@ import hudson.AbortException;
 import hudson.CloseProofOutputStream;
 import hudson.model.TaskListener;
 import hudson.remoting.RemoteOutputStream;
+import jenkins.plugins.instana.scope.Application;
+import jenkins.plugins.instana.scope.Service;
 import jenkins.plugins.instana.util.HttpClientUtil;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 import jenkins.plugins.instana.util.RequestAction;
@@ -51,18 +53,18 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		jsonObject.put("start", http.getReleaseStartTimestamp());
 		if (http.getServiceNames() != null) {
 			List<JSONObject> services = new ArrayList<>();
-			for (String serviceName : http.getServiceNames()) {
+			for (Service serviceName : http.getServiceNames()) {
 				JSONObject service = new JSONObject();
-				service.put("name", serviceName);
+				service.put("name", serviceName.getName());
 				services.add(service);
 			}
 			jsonObject.put("services", services);
 		}
 		if (http.getApplicationNames() != null) {
 			List<JSONObject> applications = new ArrayList<>();
-			for (String applicationName : http.getApplicationNames()) {
+			for (Application applicationName : http.getApplicationNames()) {
 				JSONObject application = new JSONObject();
-				application.put("name", applicationName);
+				application.put("name", applicationName.getName());
 				applications.add(application);
 			}
 			jsonObject.put("applications", applications);

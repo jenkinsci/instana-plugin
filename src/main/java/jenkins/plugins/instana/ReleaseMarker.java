@@ -25,24 +25,27 @@ import hudson.model.Items;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.FormValidation;
+import jenkins.plugins.instana.scope.Application;
+import jenkins.plugins.instana.scope.Service;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
 
 public class ReleaseMarker extends Builder {
 
 	private @Nonnull
 	String releaseName;
-	private List<String> serviceNames = DescriptorImpl.serviceNames;
-	private List<String> applicationNames = DescriptorImpl.applicationNames;
+	private List<Service> serviceNames;
+	private List<Application> applicationNames;
 	private String releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 	private String releaseEndTimestamp = DescriptorImpl.releaseEndTimestamp;
 
-	@DataBoundConstructor
 	public ReleaseMarker(@Nonnull String releaseName) {
 		this.releaseName = releaseName;
 	}
 
-	public ReleaseMarker(@Nonnull String releaseName, @Nullable List<String> serviceNames,
-						 @Nullable List<String> applicationNames) {
+	@DataBoundConstructor
+	public ReleaseMarker(@Nonnull String releaseName,
+						 @Nullable List<Service> serviceNames,
+						 @Nullable List<Application> applicationNames) {
 		this.releaseName = releaseName;
 		if (serviceNames != null) {
 			this.serviceNames = serviceNames;
@@ -75,21 +78,21 @@ public class ReleaseMarker extends Builder {
 		this.releaseEndTimestamp = releaseEndTimestamp;
 	}
 
-	public List<String> getServiceNames() {
+	public List<Service> getServiceNames() {
 		return serviceNames;
 	}
 
 	@DataBoundSetter
-	public void setServiceNames(List<String> serviceNames) {
+	public void setServiceNames(List<Service> serviceNames) {
 		this.serviceNames = serviceNames;
 	}
 
-	public List<String> getApplicationNames() {
+	public List<Application> getApplicationNames() {
 		return applicationNames;
 	}
 
 	@DataBoundSetter
-	public void setApplicationNames(List<String> applicationNames) {
+	public void setApplicationNames(List<Application> applicationNames) {
 		this.applicationNames = applicationNames;
 	}
 
@@ -165,5 +168,4 @@ public class ReleaseMarker extends Builder {
 			}
 		}
 	}
-
 }
