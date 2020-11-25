@@ -61,14 +61,13 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		if (http.getApplicationNames() != null) {
 			List<JSONObject> applications = new ArrayList<>();
 			for (String applicationName : http.getApplicationNames()) {
-				JSONObject service = new JSONObject();
-				service.put("name", applicationName);
-				applications.add(service);
+				JSONObject application = new JSONObject();
+				application.put("name", applicationName);
+				applications.add(application);
 			}
 			jsonObject.put("applications", applications);
 		}
 		String body = jsonObject.toString();
-		System.out.println(body);
 		List<HttpRequestNameValuePair> headers = http.resolveHeaders();
 
 		return new HttpRequestExecution(url, http.resolveHttpMode(), body,
@@ -93,14 +92,13 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 		if (step.getApplicationNames() != null) {
 			List<JSONObject> applications = new ArrayList<>();
 			for (String applicationName : step.getApplicationNames()) {
-				JSONObject service = new JSONObject();
-				service.put("name", applicationName);
-				applications.add(service);
+				JSONObject application = new JSONObject();
+				application.put("name", applicationName);
+				applications.add(application);
 			}
 			jsonObject.put("applications", applications);
 		}
 		String body = jsonObject.toString();
-		System.out.println(body);
 		List<HttpRequestNameValuePair> headers = step.resolveHeaders();
 
 		return new HttpRequestExecution(url, step.resolveHttpMode(), body,
