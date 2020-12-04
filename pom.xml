@@ -27,7 +27,7 @@ THE SOFTWARE.
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>3.47</version>
+		<version>3.57</version>
 	</parent>
 
 	<groupId>com.instana.jenkins.plugins</groupId>
@@ -165,9 +165,9 @@ THE SOFTWARE.
 	</dependencies>
 
   <scm>
-    <connection>scm:git:ssh://git@github.com/jenkinsci/instana-plugin.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/instana-plugin.git</developerConnection>
-    <url>https://github.com/jenkinsci/instana-plugin</url>
-    <tag>instana-1.0.3</tag>
+    <connection>scm:git:ssh://git@github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    <tag>HEAD</tag>
   </scm>
 </project>
