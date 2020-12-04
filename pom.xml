@@ -32,7 +32,7 @@ THE SOFTWARE.
 
 	<groupId>com.instana.jenkins.plugins</groupId>
 	<artifactId>instana</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.5</version>
 	<packaging>hpi</packaging>
 	<name>Instana integration</name>
 	<description>
@@ -168,6 +168,6 @@ THE SOFTWARE.
     <connection>scm:git:ssh://git@github.com/jenkinsci/instana-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/instana-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/instana-plugin</url>
-    <tag>instana-1.0.3</tag>
+    <tag>instana-1.0.5</tag>
   </scm>
 </project>
