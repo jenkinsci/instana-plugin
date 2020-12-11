@@ -55,10 +55,10 @@ The Instana Integration plugin can be installed right from the Plugin Manager in
 
 To configure the Instana Integration open up _Manage Jenkins_ and select _Configure System_.
 
-[](settings1.png)
+![](settings1.png)
 
 In the settings screen, scroll down to the section called _Instana configuration_. The field named _Instana URL_ must be set to your tenant's Instana URL in the format of _https://<tenant>.instana.io_. For _Token_ an Instana API Token needs to be created. A token can be created from the Instana UI under _Settings_ / _API Tokens_. Select _Add API Token_ and make sure that _Extensions_ / _Configuration of releases_ is enabled. Copy the generated API Token and pass it to the Jenkins Instana configuration using the _Change Password_ button. Don't forget to save the configuration.
   
-[](settings3.png)
-[](settings2.png)
-[](settings2.png)
+![](settings3.png)
+![](settings2.png)
+![](settings2.png)
