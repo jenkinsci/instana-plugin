@@ -3,4 +3,7 @@
 	<f:entry field="name" title="Name">
 		<f:textbox />
 	</f:entry>
+	<f:entry title="Scoped to applications">
+		<f:optionalProperty field="scopedTo" />
+	</f:entry>
 </j:jelly>
