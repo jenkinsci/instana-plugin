@@ -8,6 +8,7 @@ import org.jvnet.hudson.test.JenkinsRule;
 
 import hudson.model.FreeStyleProject;
 import jenkins.plugins.instana.scope.Application;
+import jenkins.plugins.instana.scope.ScopedTo;
 import jenkins.plugins.instana.scope.Service;
 
 public class ReleaseMarkerRoundtripTest {
@@ -56,6 +57,19 @@ public class ReleaseMarkerRoundtripTest {
 		project = jenkins.configRoundtrip(project);
 
 		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName", Collections.singletonList(new Service("testServiceName")), Collections.singletonList(new Application("testApplicationName")));
+		jenkins.assertEqualDataBoundBeans(myStepBuilder, project.getBuildersList().get(0));
+	}
+
+	@Test
+	public void testConfigRoundtripWithApplicationScopedService() throws Exception
+	{
+		FreeStyleProject project = jenkins.createFreeStyleProject();
+		Service service = new Service("testServiceName");
+		service.setScopedTo(new ScopedTo(Collections.singletonList(new Application("testApplicationName"))));
+		project.getBuildersList().add(new ReleaseMarker("testReleaseName", Collections.singletonList(service), null));
+		project = jenkins.configRoundtrip(project);
+
+		ReleaseMarker myStepBuilder = new ReleaseMarker("testReleaseName", Collections.singletonList(service), null);
 		jenkins.assertEqualDataBoundBeans(myStepBuilder, project.getBuildersList().get(0));
 	}
 }

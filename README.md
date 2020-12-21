@@ -49,3 +49,10 @@ releaseMarker releaseName: "Release 4711", applications: [application (name: "My
 releaseMarker releaseName: "Release 4711", applications: [application (name: "My Application-1"), application (name: "My Application-2")]
 ```
 
+```groovy
+// service with scope of a single application
+releaseMarker releaseName: "Release 4711", services: [service (name: "my-service", scopedTo: scopedTo (applications: [application ('My Application-1')]))]
+
+// service with scope of multiple applications
+releaseMarker releaseName: "Release 4711", services: [service (name: "my-service", scopedTo: scopedTo (applications: [application (name: "My Application-1"), application (name: "My Application-2")]))]
+```
