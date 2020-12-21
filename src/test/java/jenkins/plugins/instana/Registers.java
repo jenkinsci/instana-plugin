@@ -25,13 +25,15 @@ import org.eclipse.jetty.server.Request;
 import org.junit.Test;
 
 import jenkins.plugins.instana.ReleaseMarkerTestBase.SimpleHandler;
+import jenkins.plugins.instana.scope.Application;
+import jenkins.plugins.instana.scope.Service;
 
 /**
  * @author Janario Oliveira
  */
 public class Registers {
 
-	static void registerReleaseEndpointChecker(final String name, final List<String> serviceNames, final List<String> applicationNames, final String timestamp, final String apiToken)
+	static void registerReleaseEndpointChecker(final String name, final List<Service> services, final List<Application> applications, final String timestamp, final String apiToken)
 	{
 		registerHandler("/api/releases", HttpMode.POST,new SimpleHandler() {
 			@Override
@@ -40,13 +42,13 @@ public class Registers {
 				final JSONObject jsonObject = JSONObject.fromObject(body);
 				assertEquals(jsonObject.getString("name"),name);
 				assertEquals(jsonObject.getString("start"),timestamp);
-				if (serviceNames != null) {
+				if (services != null) {
 					JSONArray services = jsonObject.getJSONArray("services");
-					assertArrayEquals(services.stream().map(o -> ((JSONObject)o).get("name")).toArray(), serviceNames.toArray());
+					assertArrayEquals(services.stream().map(o -> (JSONObject)o).toArray(), services.toArray());
 				}
-				if (applicationNames != null) {
+				if (applications != null) {
 					JSONArray applications = jsonObject.getJSONArray("applications");
-					assertArrayEquals(applications.stream().map(o -> ((JSONObject)o).get("name")).toArray(), applicationNames.toArray());
+					assertArrayEquals(applications.stream().map(o -> (JSONObject)o).toArray(), applications.toArray());
 				}
 
 				Enumeration<String> authHeaders = request.getHeaders("Authorization");

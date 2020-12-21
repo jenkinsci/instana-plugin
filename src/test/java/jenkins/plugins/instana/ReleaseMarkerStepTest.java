@@ -16,6 +16,9 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import hudson.model.Result;
+import jenkins.plugins.instana.scope.Application;
+import jenkins.plugins.instana.scope.ScopedTo;
+import jenkins.plugins.instana.scope.Service;
 
 
 public class ReleaseMarkerStepTest extends ReleaseMarkerTestBase {
@@ -46,15 +49,20 @@ public class ReleaseMarkerStepTest extends ReleaseMarkerTestBase {
 
 	@Test
 	public void correctStepDefinitonWithAllParametersSetTest() throws Exception {
+		Service scopedService = new Service("testServiceName3");
+		scopedService.setScopedTo(new ScopedTo(Collections.singletonList(new Application("testApplication1"))));
 		// Prepare the server
-		registerReleaseEndpointChecker("testReleaseName", Arrays.asList("testServiceName1", "testServiceName2"),
-				Arrays.asList("testApplicationName1", "testApplicationName2"), "123456787689", TEST_API_TOKEN);
+		registerReleaseEndpointChecker("testReleaseName",
+				Arrays.asList(new Service("testServiceName1"), new Service("testServiceName2"), scopedService),
+				Arrays.asList(new Application("testApplicationName1"), new Application("testApplicationName2")),
+				"123456787689", TEST_API_TOKEN);
 
 		// Configure the build
 		WorkflowJob proj = j.jenkins.createProject(WorkflowJob.class, "proj");
 		proj.setDefinition(new CpsFlowDefinition(
 				"def response = releaseMarker releaseName: 'testReleaseName', releaseStartTimestamp: '123456787689', " +
-						"services: [service(name:'testServiceName1'), service(name:'testServiceName2')], " +
+						"services: [service(name:'testServiceName1'), service(name:'testServiceName2'), " +
+						"	service(name:'testServiceName3', scopedTo:scopedTo(applications:[application('testApplicationName1')]))], " +
 						"applications: [application('testApplicationName1'), application('testApplicationName2')] \n" +
 						"println('Status: '+response.status)\n" +
 						"println('Response: '+response.content)\n",
