@@ -105,6 +105,15 @@ THE SOFTWARE.
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>plugin.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 	<dependencies>

@@ -25,6 +25,7 @@ import hudson.model.TaskListener;
 import jenkins.plugins.instana.scope.Application;
 import jenkins.plugins.instana.scope.Service;
 import jenkins.plugins.instana.util.HttpRequestNameValuePair;
+import jenkins.plugins.instana.util.PropertiesReader;
 
 public final class ReleaseMarkerStep extends Step {
 
@@ -100,8 +101,10 @@ public final class ReleaseMarkerStep extends Step {
 
 	List<HttpRequestNameValuePair> resolveHeaders() {
 		final List<HttpRequestNameValuePair> headers = new ArrayList<>();
+		final PropertiesReader propertiesReader = new PropertiesReader();
 		headers.add(new HttpRequestNameValuePair("Content-type", "application/json"));
 		headers.add(new HttpRequestNameValuePair("Authorization", "apiToken " + InstanaPluginGlobalConfig.get().getToken().getPlainText(), true));
+		headers.add(new HttpRequestNameValuePair("User-Agent", "jenkinsci/instana-plugin/" + propertiesReader.getProperty("plugin.version", "unknown")));
 		return headers;
 	}
 
