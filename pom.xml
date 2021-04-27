@@ -50,7 +50,8 @@ THE SOFTWARE.
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jenkins.version>2.164.1</jenkins.version>
+		<jenkins-test-harness.version>1543.v7adf29589ffb</jenkins-test-harness.version>
+		<jenkins.version>2.164.3</jenkins.version>
 		<java.level>8</java.level>
 		<pipeline.version>2.4</pipeline.version>
 	</properties>
