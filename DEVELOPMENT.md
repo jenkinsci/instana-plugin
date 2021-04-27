@@ -6,7 +6,7 @@ To execute a local Jenkins with the current SNAPSHOT version of the plugin run
 ```
 mvn clean hpi:run
 ```
-and open `http://localhost:8080`.
+and open `http://localhost:8080/jenkins/`.
 Then set the Instana configuration at `http://localhost:8080/jenkins/configure` with URL and API token.s
 
 Create a free style job and set as build action `Mark a release in Instana`.
