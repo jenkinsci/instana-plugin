@@ -134,6 +134,7 @@ public class ReleaseMarker extends Builder {
 		HttpRequestExecution exec = HttpRequestExecution.from(this, listener);
 		if (launcher != null && launcher.getChannel() != null) {
 			launcher.getChannel().call(exec);
+			releaseStartTimestamp = DescriptorImpl.releaseStartTimestamp;
 			return true;
 		} else {
 			return false;
