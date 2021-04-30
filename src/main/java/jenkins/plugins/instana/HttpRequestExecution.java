@@ -99,6 +99,18 @@ public class HttpRequestExecution extends MasterToSlaveCallable<ResponseContentS
 			for (Service service : step.getServices()) {
 				JSONObject serviceJson = new JSONObject();
 				serviceJson.put("name", service.getName());
+				// application scoped
+				if (service.getScopedTo() != null && service.getScopedTo().getApplications() != null) {
+					JSONObject scopedTo = new JSONObject();
+					List<JSONObject> applications = new ArrayList<>();
+					for (Application application : service.getScopedTo().getApplications()) {
+						JSONObject applicationJson = new JSONObject();
+						applicationJson.put("name", application.getName());
+						applications.add(applicationJson);
+					}
+					scopedTo.put("applications", applications);
+					serviceJson.put("scopedTo", scopedTo);
+				}
 				services.add(serviceJson);
 			}
 			jsonObject.put("services", services);
